@@ -1,10 +1,9 @@
 import App from './App.vue';
 import Buefy from 'buefy';
-import router from '@/router/router';
+import { router } from '@/router/router';
 import store from '@/store';
 import Vue from 'vue';
 
-import 'buefy/dist/buefy.css';
 import '@/registerServiceWorker';
 import '@/services';
 
