@@ -1,0 +1,9 @@
+@import '~bulma/sass/utilities/all';
+@import 'colors';
+
+$footer-padding: 1vh 1.5rem 1vh;
+$footer-background-color: $theme-background-primary;
+$label-color: $theme-background-primary;
+
+@import '~bulma';
+@import '~buefy/src/scss/buefy';
