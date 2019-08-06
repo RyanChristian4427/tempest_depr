@@ -5,5 +5,9 @@ $footer-padding: 1vh 1.5rem 1vh;
 $footer-background-color: $theme-isabelline;
 $label-color: $theme-deep-space-sparkle;
 
+$colors: (
+        "xanadu": ($theme-xanadu, $theme-deep-space-sparkle),
+);
+
 @import '~bulma';
 @import '~buefy/src/scss/buefy';

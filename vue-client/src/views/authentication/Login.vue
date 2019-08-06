@@ -22,6 +22,11 @@
                             <input type="password" id="password" placeholder="Password">
                         </div>
                     </div>
+                    <div class="field">
+                        <div class="control">
+                            <a class="button is-xanadu is-rounded"><b>Submit</b></a>
+                        </div>
+                    </div>
                 </section>
             </form>
         </section>
@@ -29,6 +34,7 @@
 </template>
 
 <script>
+
     export default {
         name: 'Login',
     };
