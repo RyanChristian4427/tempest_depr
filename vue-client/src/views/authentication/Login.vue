@@ -9,18 +9,20 @@
         </section>
         <section>
             <form class="card" id="logon-form">
-                <div class="field">
-                    <label for="email" class="label">Email</label>
-                    <div class="control has-icons-left has-icons-right">
-                        <input type="email" id="email" placeholder="Email input">
+                <section id="layered-background">
+                    <div class="field">
+                        <label for="email" class="label">Email</label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input type="email" id="email" placeholder="Email input">
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label for="password" class="label">Password</label>
-                    <div class="control has-icons-left has-icons-right">
-                        <input type="password" id="password" placeholder="Password">
+                    <div class="field">
+                        <label for="password" class="label">Password</label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input type="password" id="password" placeholder="Password">
+                        </div>
                     </div>
-                </div>
+                </section>
             </form>
         </section>
     </div>
@@ -38,22 +40,26 @@
     }
 
     .hero {
-        background: $theme-primary;
+        background: $theme-xanadu;
         height: 33vh;
     }
 
     .hero .title {
         margin-left:25vw;
-        color: $theme-background-primary;
+        color: $theme-isabelline;
     }
 
     .card {
-        background: $theme-secondary;
-        width: 50vw;
+        border-radius: 20px;
+        background: $theme-xanadu;
+        width: auto;
         margin: 5vh 25vw;
+        padding: 1vh 1vh 1vh;
     }
 
-    #logon-form {
+    #layered-background {
+        border-radius: 20px;
+        background: $theme-ash-grey;
         padding: 5vh 5vw 5vh;
     }
 </style>
