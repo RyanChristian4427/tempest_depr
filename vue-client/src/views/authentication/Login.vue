@@ -20,6 +20,7 @@
                         </b-button>
                     </b-field>
                     <div id="error-message"></div>
+                    <b-loading :is-full-page="false" :active.sync="isLoading" :can-cancel="false"></b-loading>
                 </div>
             </div>
         </section>
@@ -34,6 +35,7 @@ export default {
         return {
             email: '',
             password: '',
+            isLoading: false,
         };
     },
     created() {
@@ -41,14 +43,23 @@ export default {
     },
     methods: {
         async login() {
+            this.openLoading();
             const { email, password } = this;
             if (email && password) {
                 this.hideErrorMessage();
-                const x = await this.$store.dispatch(AUTH_REQUEST, { email, password });
+                await this.$store.dispatch(AUTH_REQUEST, { email, password });
+                this.isLoading = false;
                 this.$router.push({ name: 'Home' });
             } else {
                 this.injectErrorMessage('Please provide your account credentials before submitting');
+                this.isLoading = false;
             }
+        },
+        openLoading() {
+            this.isLoading = true;
+            setTimeout(() => {
+                this.isLoading = false;
+            }, 10000);
         },
         injectErrorMessage(message) {
             const errorMessage = document.getElementById('error-message');
@@ -98,5 +109,9 @@ export default {
     #error-message {
         display: none;
         color: #E83151;
+    }
+
+    .loading-background {
+        border-radius: 20px;
     }
 </style>
