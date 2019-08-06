@@ -1,36 +1,27 @@
 <template>
     <div>
-        <section class="hero is-medium is-bold">
+        <section class="hero is-small is-bold">
             <div class="hero-body">
-                <h1 class="title">
-                    Login
-                </h1>
+                <h1 class="title">Login</h1>
             </div>
         </section>
         <section>
-            <form class="card" id="logon-form">
-                <section id="layered-background">
-                    <div class="field">
-                        <label for="email" class="label">Email</label>
-                        <div class="control has-icons-left has-icons-right">
-                            <input type="email" id="email" v-model="email" placeholder="Email input">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label for="password" class="label">Password</label>
-                        <div class="control has-icons-left has-icons-right">
-                            <input type="password" id="password" v-model="password" placeholder="Password">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <a @click="login()" class="button is-xanadu is-rounded"><b>Submit</b></a>
-                        </div>
-                    </div>
-                    <div id="error-message">
-                    </div>
-                </section>
-            </form>
+            <div class="card">
+                <div class="container" id="layered-background">
+                    <b-field label="Email">
+                        <b-input type="email" v-model="email" placeholder="Email input"/>
+                    </b-field>
+                    <b-field label="Password">
+                        <b-input type="password" v-model="password" placeholder="Password"/>
+                    </b-field>
+                    <b-field grouped position="is-right">
+                        <b-button @click="login()" id="submit-button" type="is-xanadu is-rounded">
+                            <b>Submit</b>
+                        </b-button>
+                    </b-field>
+                    <div id="error-message"></div>
+                </div>
+            </div>
         </section>
     </div>
 </template>
@@ -83,7 +74,6 @@ export default {
 
     .hero {
         background: $theme-xanadu;
-        height: 33vh;
     }
 
     .hero .title {

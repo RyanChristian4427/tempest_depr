@@ -1,8 +1,8 @@
 <template>
-    <div class="layout-content">
-        <router-view class="page-content"></router-view>
-        <core-footer></core-footer>
-    </div>
+    <section class="main-content">
+        <router-view class="page-content"/>
+        <core-footer/>
+    </section>
 </template>
 
 <script lang="ts">
@@ -17,7 +17,7 @@
 </script>
 
 <style lang="scss">
-    .layout-content {
+    .main-content {
         display: flex;
         min-height: 100vh;
         flex-direction: column;
