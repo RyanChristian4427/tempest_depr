@@ -13,18 +13,18 @@
                     <div class="field">
                         <label for="email" class="label">Email</label>
                         <div class="control has-icons-left has-icons-right">
-                            <input type="email" id="email" placeholder="Email input">
+                            <input type="email" id="email" v-model="email" placeholder="Email input">
                         </div>
                     </div>
                     <div class="field">
                         <label for="password" class="label">Password</label>
                         <div class="control has-icons-left has-icons-right">
-                            <input type="password" id="password" placeholder="Password">
+                            <input type="password" id="password" v-model="password" placeholder="Password">
                         </div>
                     </div>
                     <div class="field">
                         <div class="control">
-                            <a class="button is-xanadu is-rounded"><b>Submit</b></a>
+                            <a @click="login()" class="button is-xanadu is-rounded"><b>Submit</b></a>
                         </div>
                     </div>
                 </section>
@@ -34,10 +34,28 @@
 </template>
 
 <script>
-
-    export default {
-        name: 'Login',
-    };
+import { AUTH_REQUEST, AUTH_LOGOUT } from '@/store/actions/auth.ts';
+export default {
+    name: 'Login',
+    data() {
+        return {
+            email: '',
+            password: '',
+        };
+    },
+    created() {
+        return this.$store.dispatch(AUTH_LOGOUT);
+    },
+    methods: {
+        async login() {
+            const { email, password } = this;
+            if (email && password) {
+                await this.$store.dispatch(AUTH_REQUEST, { email, password });
+                this.$router.push({ name: 'Home' });
+            }
+        },
+    },
+};
 </script>
 
 <style lang="scss">
