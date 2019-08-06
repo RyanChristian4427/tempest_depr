@@ -27,6 +27,8 @@
                             <a @click="login()" class="button is-xanadu is-rounded"><b>Submit</b></a>
                         </div>
                     </div>
+                    <div id="error-message">
+                    </div>
                 </section>
             </form>
         </section>
@@ -50,8 +52,24 @@ export default {
         async login() {
             const { email, password } = this;
             if (email && password) {
-                await this.$store.dispatch(AUTH_REQUEST, { email, password });
+                this.hideErrorMessage();
+                const x = await this.$store.dispatch(AUTH_REQUEST, { email, password });
                 this.$router.push({ name: 'Home' });
+            } else {
+                this.injectErrorMessage('Please provide your account credentials before submitting');
+            }
+        },
+        injectErrorMessage(message) {
+            const errorMessage = document.getElementById('error-message');
+            if (errorMessage != null) {
+                errorMessage.innerText = message;
+                errorMessage.style.display = 'block';
+            }
+        },
+        hideErrorMessage() {
+            const errorMessage = document.getElementById('error-message');
+            if (errorMessage != null) {
+                errorMessage.style.display = 'none';
             }
         },
     },
@@ -69,7 +87,7 @@ export default {
     }
 
     .hero .title {
-        margin-left:25vw;
+        margin: 5vh 25vw 5vh;
         color: $theme-isabelline;
     }
 
@@ -85,5 +103,10 @@ export default {
         border-radius: 20px;
         background: $theme-ash-grey;
         padding: 5vh 5vw 5vh;
+    }
+
+    #error-message {
+        display: none;
+        color: #E83151;
     }
 </style>
