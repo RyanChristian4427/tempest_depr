@@ -1,3 +1,4 @@
+// Various custom colors used throughout the project
 $theme-primary: #2978A0;
 $theme-secondary: #315669;
 $theme-tertiary: #253031;
@@ -9,3 +10,7 @@ $theme-ash-grey: #BACDB0;
 $theme-xanadu: #729B79;
 $theme-deep-space-sparkle: #475B63;
 $theme-charleston-green: #2E2C2F;
+
+$colors: (
+        "xanadu": ($theme-xanadu, $theme-deep-space-sparkle),
+);
