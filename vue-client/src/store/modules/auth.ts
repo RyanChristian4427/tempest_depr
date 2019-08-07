@@ -15,7 +15,7 @@ import User from '@/models/user';
 const state: AuthState = {
     user: {} as User,
     status: '',
-    errors: '',
+    errors: {} as string,
     authenticated: !!JwtService.getToken(),
 };
 
@@ -39,10 +39,9 @@ const actions = {
             // TEMP MOCK
             const data = { token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6Imp' +
                 'vaG5kb2VAZXhhbXBsZS5jb20iLCJpYXQiOjE1MTYyMzkwMjJ9.MmQCu6FE_g6zULEQWXgmlClbqUas6Q7HUKVaOFLW4Ds' };
-            // commit(AUTH_SUCCESS, data.token);
-            // resolve(data);
-            commit(AUTH_ERROR, 'Unknown Error');
-            reject('Unknown Error');
+            commit(AUTH_SUCCESS, data.token);
+            resolve(data);
+            // commit(AUTH_ERROR, 'Unknown Error');
 
             // ApiService.post('auth/login', credentials)
             //     .then(({ data }) => {

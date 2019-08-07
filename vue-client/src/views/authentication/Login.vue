@@ -19,7 +19,7 @@
                             <b>Submit</b>
                         </b-button>
                     </b-field>
-                    <div id="error-message"></div>
+                    <div id="error-message" v-if="error">{{ error }}</div>
                     <b-loading :is-full-page="false" :active.sync="isLoading" :can-cancel="false"></b-loading>
                 </div>
             </div>
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { AUTH_REQUEST, AUTH_LOGOUT } from '@/store/actions/auth.ts';
 export default {
     name: 'Login',
@@ -41,12 +42,17 @@ export default {
     created() {
         return this.$store.dispatch(AUTH_LOGOUT);
     },
+    computed: {
+        ...mapState({
+            error: (state) => state.auth.errors,
+        }),
+    },
     methods: {
         async login() {
             this.openLoading();
             const { email, password } = this;
             if (email && password) {
-                this.hideErrorMessage();
+                this.injectErrorMessage('');
                 await this.$store
                     .dispatch(AUTH_REQUEST, { email, password })
                     .then(() => this.isLoading = false)
@@ -60,20 +66,10 @@ export default {
             this.isLoading = true;
             setTimeout(() => {
                 this.isLoading = false;
-            }, 10000);
+            }, 5000);
         },
         injectErrorMessage(message) {
-            const errorMessage = document.getElementById('error-message');
-            if (errorMessage != null) {
-                errorMessage.innerText = message;
-                errorMessage.style.display = 'block';
-            }
-        },
-        hideErrorMessage() {
-            const errorMessage = document.getElementById('error-message');
-            if (errorMessage != null) {
-                errorMessage.style.display = 'none';
-            }
+            this.$store.state.auth.errors = message;
         },
     },
 };
@@ -108,7 +104,6 @@ export default {
     }
 
     #error-message {
-        display: none;
         color: #E83151;
     }
 
