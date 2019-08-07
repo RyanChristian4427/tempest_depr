@@ -1,3 +1,5 @@
+import Minimal from '@/components/layouts/Minimal.vue';
+
 export default [
     {
         path: '/',
@@ -8,6 +10,17 @@ export default [
         path: '/about',
         name: 'About',
         component: () => import('@/views/About.vue'),
+    },
+    {
+        path: '/',
+        component: Minimal,
+        children: [
+            {
+                path: '/login',
+                name: 'Login',
+                component: () => import('@/views/authentication/Login.vue'),
+            },
+        ],
     },
     {
         path: '*',

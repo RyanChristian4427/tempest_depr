@@ -4,8 +4,8 @@ import { router } from '@/router/router';
 import store from '@/store';
 import Vue from 'vue';
 
-import '@/registerServiceWorker';
 import '@/services';
+import '@/registerServiceWorker';
 
 Vue.use(Buefy);
 
