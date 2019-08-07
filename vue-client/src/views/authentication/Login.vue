@@ -47,9 +47,10 @@ export default {
             const { email, password } = this;
             if (email && password) {
                 this.hideErrorMessage();
-                await this.$store.dispatch(AUTH_REQUEST, { email, password });
-                this.isLoading = false;
-                this.$router.push({ name: 'Home' });
+                await this.$store
+                    .dispatch(AUTH_REQUEST, { email, password })
+                    .then(() => this.isLoading = false)
+                    .then(() => this.$router.push({ name: 'Home' }));
             } else {
                 this.injectErrorMessage('Please provide your account credentials before submitting');
                 this.isLoading = false;

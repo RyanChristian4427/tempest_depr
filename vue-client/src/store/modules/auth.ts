@@ -5,14 +5,18 @@ import {
     AUTH_LOGOUT,
     AUTH_REGISTER,
 } from '@/store/actions/auth';
-import User from '@/models/user';
+
+import {AuthState} from '@/store/types/auth';
 import ApiService from '@/services/api.axios';
 import JwtService from '@/services/jwt-service';
+import User from '@/models/user';
 
-const state = {
-    user: null,
+
+const state: AuthState = {
+    user: {} as User,
     status: '',
-    isAuthenticated: !!JwtService.getToken(),
+    errors: '',
+    authenticated: !!JwtService.getToken(),
 };
 
 const getters = {
@@ -35,8 +39,10 @@ const actions = {
             // TEMP MOCK
             const data = { token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6Imp' +
                 'vaG5kb2VAZXhhbXBsZS5jb20iLCJpYXQiOjE1MTYyMzkwMjJ9.MmQCu6FE_g6zULEQWXgmlClbqUas6Q7HUKVaOFLW4Ds' };
-            commit(AUTH_SUCCESS, data.token);
-            resolve(data);
+            // commit(AUTH_SUCCESS, data.token);
+            // resolve(data);
+            commit(AUTH_ERROR, 'Unknown Error');
+            reject('Unknown Error');
 
             // ApiService.post('auth/login', credentials)
             //     .then(({ data }) => {
@@ -62,22 +68,24 @@ const actions = {
 };
 
 const mutations = {
-    [AUTH_REQUEST]: (state: any) => {
+    [AUTH_REQUEST]: (state: AuthState) => {
         state.status = 'Logging in';
+        state.errors = '';
     },
-    [AUTH_SUCCESS]: (state: any, token: string) => {
+    [AUTH_SUCCESS]: (state: AuthState, token: string) => {
         state.status = 'Logged in';
         const tokenData = JSON.parse(atob(token.split('.')[1]));
         state.user = new User(tokenData.name, tokenData.email, token);
-        state.isAuthenticated = true;
+        state.authenticated = true;
     },
-    [AUTH_ERROR]: (state: any, error: string) => {
-        state.status = 'Error: ' + error;
+    [AUTH_ERROR]: (state: AuthState, error: string) => {
+        state.errors = error;
     },
-    [AUTH_LOGOUT]: (state: any) => {
-        state.user = null;
+    [AUTH_LOGOUT]: (state: AuthState) => {
+        state.user = {} as User;
         state.status = '';
-        state.isAuthenticated = false;
+        state.errors = '';
+        state.authenticated = false;
         JwtService.destroyToken();
     },
 };

@@ -3,7 +3,7 @@ export default class User {
     private readonly email: string;
     private readonly token: string;
 
-    constructor(name: string, email: string, token: string) {
+    public constructor(name: string, email: string, token: string) {
         this.name = name;
         this.email = email;
         this.token = token;
