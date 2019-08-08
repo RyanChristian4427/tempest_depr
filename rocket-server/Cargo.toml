@@ -1,0 +1,10 @@
+[package]
+name = "rocket-server"
+version = "0.1.0"
+authors = ["Ryan Christian <ryanchristian4427@gmail.com>"]
+homepage = "https://github.com/RyanChristian4427/tempest"
+description = "A RESTful API for the tempest email client"
+edition = "2018"
+
+[dependencies]
+rocket = "0.4.2"
