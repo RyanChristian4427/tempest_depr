@@ -1,9 +1,13 @@
-import Vue from 'vue';
 import App from './App.vue';
-import router from '@/router/router';
+import Buefy from 'buefy';
+import { router } from '@/router/router';
 import store from '@/store';
-import './registerServiceWorker';
+import Vue from 'vue';
+
 import '@/services';
+import '@/registerServiceWorker';
+
+Vue.use(Buefy);
 
 
 Vue.config.productionTip = false;
