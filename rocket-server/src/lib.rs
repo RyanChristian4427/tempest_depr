@@ -8,6 +8,10 @@ extern crate rocket_contrib;
 #[macro_use]
 extern crate diesel;
 
+use validator;
+#[macro_use]
+extern crate validator_derive;
+
 mod api;
 mod auth;
 mod db;
