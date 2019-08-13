@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  postgres:
+    container_name: 'postgres'
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USER: "tempest_api"
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_DB: "tempest"
+    ports:
+     - "5432:5432"
+     
+  diesel-cli:
+    image: ryanchristian4427/diesel-cli:latest
+    depends_on:
+     - postgres
