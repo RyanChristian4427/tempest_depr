@@ -1,21 +1,35 @@
-use rocket::request::{self, FromRequest, Request};
+use crate::config;
+use crate::db::users_repository::{self, UserCreationError};
+use crate::models::user::User;
+
+use diesel::pg::PgConnection;
 use rocket::http::Status;
+use rocket::request::{self, FromRequest, Request};
 use rocket::Outcome;
 use serde::{Deserialize, Serialize};
 
 use frank_jwt as jwt;
 use serde_json;
 
-use crate::config;
+pub fn register(
+    first_name: &str,
+    last_name: &str,
+    email: &str,
+    password: &str,
+    conn: &PgConnection,
+) -> Result<User, UserCreationError> {
+    users_repository::register(&first_name, &last_name, &email, &password, &conn)
+}
+
+pub fn login(email: &str, password: &str, conn: &PgConnection) -> Option<User> {
+    users_repository::login(&email, &password, &conn)
+}
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Auth {
-    /// timestamp
-    pub exp: i64,
-    /// user id
     pub id: i32,
-    pub name: String,
-    pub email: String
+    pub email: String,
+    pub exp: i64,
 }
 
 impl Auth {
@@ -28,7 +42,7 @@ impl Auth {
             &payload,
             jwt::Algorithm::HS256,
         )
-            .expect("jwt")
+        .expect("jwt")
     }
 }
 
@@ -65,7 +79,7 @@ fn extract_token_from_header(header: &str) -> Option<&str> {
 }
 
 /// Decode token into `Auth` struct. If any error is encountered, log it
-/// an return None.
+/// and return None.
 fn decode_token(token: &str) -> Option<Auth> {
     jwt::decode(token, &config::SECRET.to_string(), jwt::Algorithm::HS256)
         .map(|(_, payload)| {
