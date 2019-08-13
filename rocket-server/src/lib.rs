@@ -13,9 +13,9 @@ use validator;
 extern crate validator_derive;
 
 mod api;
-mod auth;
-mod db;
 mod config;
+mod db;
+mod errors;
 mod models;
 mod schema;
 mod services;
@@ -31,15 +31,17 @@ fn not_found() -> JsonValue {
     })
 }
 
-pub(crate) fn rocket_instance(mounts: Vec<(&str, Vec<Route>)>) -> Rocket {
+fn rocket_instance(mounts: Vec<(&str, Vec<Route>)>) -> Rocket {
     let mut instance = rocket::ignite();
 
     for (path, methods) in mounts {
         instance = instance.mount(path, methods);
     }
-    instance.attach(db::Conn::fairing())
-            .attach(rocket_cors::Cors::default())
-            .register(catchers![not_found])
+
+    instance
+        .attach(db::Conn::fairing())
+        .attach(rocket_cors::Cors::default())
+        .register(catchers![not_found])
 }
 
 fn mounts() -> Vec<(&'static str, Vec<Route>)> {
