@@ -17,6 +17,7 @@ These instructions will get you a copy of the project up and running on your loc
 Rust 1.38 nightly
 Cargo
 Docker - optional
+Diesel-cli - necessary only if Docker is not used
 ```
 
 ### Running
@@ -27,7 +28,7 @@ To get the server running locally, I have provided a Docker Compose file. From p
 docker-compose up --build -d
 ```
 
-This will start the PostgreSQL DB in the background, as well as create the image used for Diesel-CLI. To populate the Database, run:
+This will start the PostgreSQL DB in the background, as well as create the image used for Diesel-CLI. To populate the database, run:
 
 ```
 docker run --rm \
@@ -39,9 +40,14 @@ docker run --rm \
 
 The Docker image built for diesel-cli will run "Diesel" without any arguments, making the container act like a normal CLI, however, that requires the entire run command on every use. I therefore recommend binding "docker ... /diesel-cli" to "diesel-cli" in a .bashrc or .zshrc, so the tool can be just called with "diesel-cli migration run".
 
+If you'd like to avoid Docker, a local Postgres database is necessary. Make sure to edit the [.env](.env) file and [Rocket.toml](Rocket.toml) file to match your connection URL. You will also need to install the diesel-cli, and run it with:
+
+```
+diesel migration run
+```
+
 The server can then be ran using:
 
 ```
 cargo run
 ```
-
