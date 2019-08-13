@@ -1,8 +1,5 @@
-#![feature(proc_macro_hygiene, decl_macro)]
-
-mod controllers;
-#[macro_use] extern crate rocket;
+use tempest;
 
 fn main() {
-    controllers::run();
+    tempest::rocket().launch();
 }
