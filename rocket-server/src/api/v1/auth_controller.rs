@@ -6,10 +6,6 @@ use rocket_contrib::json::{Json, JsonValue};
 use serde::Deserialize;
 use validator::Validate;
 
-#[get("/hello")]
-pub fn index() -> JsonValue {
-    json!({ "Hello": "World!"})
-}
 
 #[derive(Deserialize)]
 pub struct NewUser {
@@ -26,8 +22,8 @@ struct NewUserData {
     password: Option<String>,
 }
 
-#[post("/users", format = "json", data = "<new_user>")]
-pub fn post_users_register(new_user: Json<NewUser>, conn: db::Conn) -> Result<JsonValue, Errors> {
+#[post("/users/register", format = "json", data = "<new_user>")]
+pub fn users_register(new_user: Json<NewUser>, conn: db::Conn) -> Result<JsonValue, Errors> {
     let new_user = new_user.into_inner().user;
 
     let mut extractor = FieldValidator::validate(&new_user);
@@ -60,7 +56,7 @@ struct LoginUserData {
 }
 
 #[post("/users/login", format = "json", data = "<user>")]
-pub fn post_users_login(user: Json<LoginUser>, conn: db::Conn) -> Result<JsonValue, Errors> {
+pub fn users_login(user: Json<LoginUser>, conn: db::Conn) -> Result<JsonValue, Errors> {
     let user = user.into_inner().user;
 
     let mut extractor = FieldValidator::default();
