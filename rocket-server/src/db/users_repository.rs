@@ -1,5 +1,6 @@
 use crate::models::user::User;
 use crate::schema::users;
+
 use crypto::scrypt::{scrypt_check, scrypt_simple, ScryptParams};
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
@@ -36,7 +37,6 @@ pub fn register(
     password: &str,
     conn: &PgConnection,
 ) -> Result<User, UserCreationError> {
-    // see https://blog.filippo.io/the-scrypt-parameters
     let hashed_password =
         &scrypt_simple(password, &ScryptParams::new(14, 8, 1)).expect("hash error");
 
