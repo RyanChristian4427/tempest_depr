@@ -1,3 +1,3 @@
-import ApiService from './api.axios';
+import ApiService from './api-service';
 
 ApiService.init();
