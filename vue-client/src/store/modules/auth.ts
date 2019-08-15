@@ -32,32 +32,24 @@ const getters = {
 };
 
 const actions = {
-    [AUTH_REQUEST]: ({ commit }: any, credentials: { email: string, password: string}) => {
+    [AUTH_REQUEST]: ({ commit }: any, credentials: { user: { email: string, password: string }}) => {
         return new Promise((resolve, reject) => {
             commit(AUTH_REQUEST);
-
-            // TEMP MOCK
-            const data = { token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6Imp' +
-                'vaG5kb2VAZXhhbXBsZS5jb20iLCJpYXQiOjE1MTYyMzkwMjJ9.MmQCu6FE_g6zULEQWXgmlClbqUas6Q7HUKVaOFLW4Ds' };
-            commit(AUTH_SUCCESS, data.token);
-            resolve(data);
-            // commit(AUTH_ERROR, 'Unknown Error');
-
-            // ApiService.post('auth/login', credentials)
-            //     .then(({ data }) => {
-            //         commit(AUTH_SUCCESS, data.token);
-            //         ApiService.setHeader();
-            //         resolve(data);
-            //     })
-            //     .catch(({ response }) => {
-            //         if (response !== undefined) {
-            //             commit(AUTH_ERROR, response.data.errors);
-            //             reject(response.data.errors);
-            //         } else {
-            //             commit(AUTH_ERROR, 'Unknown Error');
-            //             reject('Unknown Error');
-            //         }
-            //     });
+            ApiService.post('users/login', credentials)
+                .then(({ data }) => {
+                    commit(AUTH_SUCCESS, data.user);
+                    ApiService.setHeader();
+                    resolve(data);
+                })
+                .catch(({ response }) => {
+                    if (response !== undefined) {
+                        commit(AUTH_ERROR, response.data.errors);
+                        reject(response.data.errors);
+                    } else {
+                        commit(AUTH_ERROR, 'Unknown Error');
+                        reject('Unknown Error');
+                    }
+                });
         });
 
     },
@@ -71,11 +63,12 @@ const mutations = {
         state.status = 'Logging in';
         state.errors = '';
     },
-    [AUTH_SUCCESS]: (state: AuthState, token: string) => {
+    [AUTH_SUCCESS]: (state: AuthState, user: { email: string, first_name: string,
+                                                last_name: string, token: string} ) => {
         state.status = 'Logged in';
-        const tokenData = JSON.parse(atob(token.split('.')[1]));
-        state.user = new User(tokenData.name, tokenData.email, token);
+        state.user = new User(user.first_name + ' ' + user.last_name, user.email, user.token);
         state.authenticated = true;
+        JwtService.saveToken(user.token);
     },
     [AUTH_ERROR]: (state: AuthState, error: string) => {
         state.errors = error;
