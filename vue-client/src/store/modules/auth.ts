@@ -7,7 +7,7 @@ import {
 } from '@/store/actions/auth';
 
 import {AuthState} from '@/store/types/auth';
-import ApiService from '@/services/api.axios';
+import ApiService from '@/services/api-service';
 import JwtService from '@/services/jwt-service';
 import User from '@/models/user';
 
