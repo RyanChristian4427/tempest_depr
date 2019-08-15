@@ -9,10 +9,10 @@
             <div class="card">
                 <div class="container" id="layered-background">
                     <b-field label="Email">
-                        <b-input type="email" v-model="email" placeholder="Email input"/>
+                        <b-input type="email" v-model="user.email" placeholder="Email input"/>
                     </b-field>
                     <b-field label="Password">
-                        <b-input type="password" v-model="password" placeholder="Password"/>
+                        <b-input type="password" v-model="user.password" placeholder="Password"/>
                     </b-field>
                     <b-field grouped position="is-right">
                         <b-button @click="login()" id="submit-button" type="is-xanadu is-rounded">
@@ -34,8 +34,10 @@ export default {
     name: 'Login',
     data() {
         return {
-            email: '',
-            password: '',
+            user: {
+                email: '',
+                password: '',
+            },
             isLoading: false,
         };
     },
@@ -50,11 +52,11 @@ export default {
     methods: {
         async login() {
             this.openLoading();
-            const { email, password } = this;
-            if (email && password) {
+            const { user } = this;
+            if (user.email && user.password) {
                 this.injectErrorMessage('');
                 await this.$store
-                    .dispatch(AUTH_REQUEST, { email, password })
+                    .dispatch(AUTH_REQUEST, { user })
                     .then(() => this.isLoading = false)
                     .then(() => this.$router.push({ name: 'Home' }));
             } else {
