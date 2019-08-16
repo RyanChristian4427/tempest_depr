@@ -58,7 +58,7 @@ export default {
                 await this.$store
                     .dispatch(AUTH_REQUEST, { user })
                     .then(() => this.isLoading = false)
-                    .then(() => this.$router.push({ name: 'Home' }));
+                    .then(() => this.$router.push({ name: 'Dashboard' }));
             } else {
                 this.injectErrorMessage('Please provide your account credentials before submitting');
                 this.isLoading = false;
