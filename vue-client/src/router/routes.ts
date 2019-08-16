@@ -11,6 +11,11 @@ export default [
                 name: 'Login',
                 component: () => import('@/views/authentication/Login.vue'),
             },
+            {
+                path: '/register',
+                name: 'Register',
+                component: () => import('@/views/authentication/Register.vue'),
+            },
         ],
     },
     {
