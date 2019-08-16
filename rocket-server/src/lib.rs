@@ -49,7 +49,7 @@ fn mounts() -> Vec<(&'static str, Vec<Route>)> {
 }
 
 fn cors() -> rocket_cors::Cors {
-    let allowed_origins = AllowedOrigins::some(&["https://localhost:8080"]);
+    let (allowed_origins, _failed_origins) = AllowedOrigins::some(&["https://localhost:8080", "https://192.168.0.*:8080"]);
 
     // You can also deserialize this
     rocket_cors::Cors {
