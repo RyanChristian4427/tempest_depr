@@ -1,4 +1,4 @@
-export const API_URL = 'https://localhost:8000/api/v1/';
+export const API_URL = '/api/v1/';
 
 import Vue from 'vue';
 import axios from 'axios';

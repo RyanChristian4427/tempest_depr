@@ -6,7 +6,7 @@ import {
     AUTH_REGISTER,
 } from '@/store/actions/auth';
 
-import {AuthState} from '@/store/types/auth';
+import {AuthState, AuthSuccessResponse, LoginUser, RegisterUser} from '@/store/types/auth';
 import ApiService from '@/services/api-service';
 import JwtService from '@/services/jwt-service';
 import User from '@/models/user';
@@ -32,7 +32,7 @@ const getters = {
 };
 
 const actions = {
-    [AUTH_REQUEST]: ({ commit }: any, credentials: { user: { email: string, password: string }}) => {
+    [AUTH_REQUEST]: ({ commit }: any, credentials: LoginUser) => {
         return new Promise((resolve, reject) => {
             commit(AUTH_REQUEST);
             ApiService.post('users/login', credentials)
@@ -56,6 +56,19 @@ const actions = {
     [AUTH_LOGOUT]: ({ commit }: any) => {
         commit(AUTH_LOGOUT);
     },
+    [AUTH_REGISTER]({ commit }: any, credentials: RegisterUser) {
+        return new Promise((resolve, reject) => {
+            ApiService.post('users/register', credentials)
+                .then(({ data }) => {
+                    commit(AUTH_SUCCESS, data.user);
+                    resolve(data);
+                })
+                .catch(({ response }) => {
+                    commit(AUTH_ERROR, response.data.errors);
+                    reject(response);
+                });
+        });
+    },
 };
 
 const mutations = {
@@ -63,8 +76,7 @@ const mutations = {
         state.status = 'Logging in';
         state.errors = '';
     },
-    [AUTH_SUCCESS]: (state: AuthState, user: { email: string, first_name: string,
-                                                last_name: string, token: string} ) => {
+    [AUTH_SUCCESS]: (state: AuthState, user: AuthSuccessResponse ) => {
         state.status = 'Logged in';
         state.user = new User(user.first_name + ' ' + user.last_name, user.email, user.token);
         state.authenticated = true;
