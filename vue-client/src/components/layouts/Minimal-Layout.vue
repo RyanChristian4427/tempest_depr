@@ -1,17 +1,17 @@
 <template>
     <section class="main-content">
         <router-view class="page-content"/>
-        <core-footer/>
+        <footer/>
     </section>
 </template>
 
 <script lang="ts">
-    import CoreFooter from '@/components/core/Footer.vue';
+    import Footer from '@/components/core/Footer.vue';
 
     export default {
         name: 'Login-Layout',
         components: {
-            CoreFooter,
+            Footer,
         },
     };
 </script>
