@@ -1,5 +1,6 @@
 import {
     AUTH_REQUEST,
+    AUTH_FIRST_TIME,
     AUTH_SUCCESS,
     AUTH_ERROR,
     AUTH_LOGOUT,
@@ -20,13 +21,13 @@ const state: AuthState = {
 };
 
 const getters = {
-    currentUser(state: { user: any; }) {
+    currentUser(state: AuthState) {
         return state.user;
     },
-    isAuthenticated(state: { isAuthenticated: boolean; }) {
-        return state.isAuthenticated;
+    isAuthenticated(state: AuthState) {
+        return state.authenticated;
     },
-    status(state: { status: any }) {
+    status(state: AuthState) {
         return state.status;
     },
 };
@@ -76,6 +77,9 @@ const mutations = {
         state.status = 'Logging in';
         state.errors = '';
     },
+    [AUTH_FIRST_TIME]: (state: AuthState) => {
+        state.status = 'First time user';
+    },
     [AUTH_SUCCESS]: (state: AuthState, user: AuthSuccessResponse ) => {
         state.status = 'Logged in';
         state.user = new User(user.first_name + ' ' + user.last_name, user.email, user.token);
@@ -83,6 +87,7 @@ const mutations = {
         JwtService.saveToken(user.token);
     },
     [AUTH_ERROR]: (state: AuthState, error: string) => {
+        state.status = '';
         state.errors = error;
     },
     [AUTH_LOGOUT]: (state: AuthState) => {
