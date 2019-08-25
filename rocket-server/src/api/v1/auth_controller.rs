@@ -66,5 +66,5 @@ pub fn users_login(user: Json<LoginUser>, conn: db::Conn) -> Result<JsonValue, E
 
     login(&email, &password, &conn)
         .map(|user| json!({ "user": user.to_user_auth() }))
-        .ok_or_else(|| Errors::new(&[("Email or password", "is invalid")]))
+        .ok_or_else(|| Errors::new(&[("email or password", "is invalid")]))
 }
