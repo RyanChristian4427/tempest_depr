@@ -3,15 +3,30 @@
         <div class="container">
             <ul>
                 <email-card v-for="email in inbox"
-                            :key="email"
                             v-bind:email="email">
                 </email-card>
             </ul>
+            <b-pagination
+                    :total="total"
+                    :current.sync="current"
+                    :range-before="rangeBefore"
+                    :range-after="rangeAfter"
+                    :order="order"
+                    :size="size"
+                    :simple="isSimple"
+                    :rounded="isRounded"
+                    :per-page="perPage"
+                    aria-next-label="Next page"
+                    aria-previous-label="Previous page"
+                    aria-page-label="Page"
+                    aria-current-label="Current page">
+            </b-pagination>
         </div>
     </section>
 </template>
 
-<script lang="ts">
+<script lang="js">
+    import { mapGetters } from 'vuex';
     import EmailCard from '@/components/tempest/EmailCard.vue';
 
     export default {
@@ -83,7 +98,25 @@
                         timestamp: '9:37am',
                     },
                 ],
+                total: 0,
+                current: 1,
+                perPage: 10,
+                rangeBefore: 0,
+                rangeAfter: 0,
+                order: 'is-centered',
+                size: '',
+                isSimple: true,
+                isRounded: true,
             };
+        },
+        computed: {
+            ...mapGetters([
+                'emailsPerPage',
+            ]),
+        },
+        mounted() {
+            this.total = this.inbox.length;
+            this.perPage = this.emailsPerPage;
         },
     };
 </script>
