@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { AUTH_REQUEST, AUTH_LOGOUT } from '@/store/actions/auth.ts';
 export default {
     name: 'Login',
@@ -38,7 +38,6 @@ export default {
                 email: '',
                 password: '',
             },
-            isLoading: false,
         };
     },
     created() {
@@ -48,27 +47,23 @@ export default {
         ...mapState({
             error: (state) => state.auth.errors,
         }),
+        ...mapGetters(
+            ['status'],
+        ),
+        isLoading: function() {
+            return this.status === 'Logging in';
+        }
     },
     methods: {
         async login() {
-            this.openLoading();
             const { user } = this;
             if (user.email && user.password) {
                 this.injectErrorMessage('');
-                await this.$store
-                    .dispatch(AUTH_REQUEST, { user })
-                    .then(() => this.isLoading = false)
+                await this.$store.dispatch(AUTH_REQUEST, { user })
                     .then(() => this.$router.push({ name: 'Dashboard' }));
             } else {
                 this.injectErrorMessage('Please provide your account credentials before submitting');
-                this.isLoading = false;
             }
-        },
-        openLoading() {
-            this.isLoading = true;
-            setTimeout(() => {
-                this.isLoading = false;
-            }, 5000);
         },
         injectErrorMessage(message) {
             this.$store.state.auth.errors = message;
