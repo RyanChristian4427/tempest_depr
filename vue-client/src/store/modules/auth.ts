@@ -16,7 +16,7 @@ import User from '@/models/user';
 const state: AuthState = {
     user: {} as User,
     status: '',
-    errors: {} as string,
+    errors: '',
     authenticated: !!JwtService.getToken(),
 };
 
@@ -29,6 +29,9 @@ const getters = {
     },
     status(state: AuthState) {
         return state.status;
+    },
+    errors(state: AuthState) {
+        return state.errors;
     },
 };
 
@@ -52,7 +55,9 @@ const actions = {
                     }
                 });
         });
-
+    },
+    [AUTH_ERROR]: ({ commit }: any, error: string) => {
+        commit(AUTH_ERROR, error);
     },
     [AUTH_LOGOUT]: ({ commit }: any) => {
         commit(AUTH_LOGOUT);

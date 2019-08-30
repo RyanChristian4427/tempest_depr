@@ -19,7 +19,7 @@
                             <b>Submit</b>
                         </b-button>
                     </b-field>
-                    <div id="error-message" v-if="error">{{ error }}</div>
+                    <div id="error-message" v-if="isError !== ''">{{ isError }}</div>
                     <b-loading :is-full-page="false" :active.sync="isLoading" :can-cancel="false"></b-loading>
                 </div>
             </div>
@@ -27,9 +27,10 @@
     </div>
 </template>
 
-<script>
-import { mapState, mapGetters } from 'vuex';
-import { AUTH_REQUEST, AUTH_LOGOUT } from '@/store/actions/auth.ts';
+<script lang="ts">
+import { mapGetters, mapActions } from 'vuex';
+import {AUTH_REQUEST, AUTH_LOGOUT, AUTH_ERROR} from '@/store/actions/auth.ts';
+
 export default {
     name: 'Login',
     data() {
@@ -40,33 +41,36 @@ export default {
             },
         };
     },
-    created() {
-        return this.$store.dispatch(AUTH_LOGOUT);
+    created(): any {
+        return this.methods.logout();
     },
     computed: {
-        ...mapState({
-            error: (state) => state.auth.errors,
-        }),
         ...mapGetters(
-            ['status'],
+            ['errors', 'status'],
         ),
-        isLoading: function() {
+        isError(this: { errors: string} ): string {
+            return this.errors;
+        },
+        isLoading(this: { status: string } ): boolean {
             return this.status === 'Logging in';
-        }
+        },
     },
     methods: {
-        async login() {
+        ...mapActions(
+            [AUTH_REQUEST, AUTH_LOGOUT, AUTH_ERROR],
+        ),
+        async logout() {
+            return AUTH_LOGOUT;
+        },
+        async login(this: { user: { email: string, password: string}, AUTH_REQUEST: any,
+                    AUTH_ERROR: any, $router: any }) {
             const { user } = this;
             if (user.email && user.password) {
-                this.injectErrorMessage('');
-                await this.$store.dispatch(AUTH_REQUEST, { user })
+                await this.AUTH_REQUEST({user})
                     .then(() => this.$router.push({ name: 'Dashboard' }));
             } else {
-                this.injectErrorMessage('Please provide your account credentials before submitting');
+                await this.AUTH_ERROR('Please provide your account credentials before submitting');
             }
-        },
-        injectErrorMessage(message) {
-            this.$store.state.auth.errors = message;
         },
     },
 };

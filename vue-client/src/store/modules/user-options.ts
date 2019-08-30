@@ -1,7 +1,7 @@
 import { UserOptionsState } from '@/store/types/user-options';
 
 const state: UserOptionsState = {
-    emailsPerPage: 4,
+    emailsPerPage: 50,
 };
 
 const getters = {
