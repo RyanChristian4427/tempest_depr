@@ -2,127 +2,71 @@
     <section>
         <div class="container">
             <ul>
-                <email-card v-for="email in inbox"
-                            v-bind:email="email">
+                <email-card v-for="email in paginatedItems"
+                            v-bind:email="email"
+                            v-bind:key="email">
                 </email-card>
             </ul>
             <b-pagination
-                    :total="total"
-                    :current.sync="current"
-                    :range-before="rangeBefore"
-                    :range-after="rangeAfter"
+                    :total="this.total"
+                    :current.sync="currentPage"
                     :order="order"
-                    :size="size"
                     :simple="isSimple"
                     :rounded="isRounded"
-                    :per-page="perPage"
-                    aria-next-label="Next page"
-                    aria-previous-label="Previous page"
-                    aria-page-label="Page"
-                    aria-current-label="Current page">
+                    :per-page="this.perPage">
             </b-pagination>
         </div>
     </section>
 </template>
 
-<script lang="js">
-    import { mapGetters } from 'vuex';
-    import EmailCard from '@/components/tempest/EmailCard.vue';
+<script lang="ts">
+import { mapGetters } from 'vuex';
+import EmailCard from '@/components/tempest/EmailCard.vue';
+const testData = require('@/assets/data.json');
 
-    export default {
-        name: 'Dashboard',
-        components: {
-            EmailCard,
+interface Email {
+    sender: string;
+    content: string;
+    datetime: string;
+}
+
+export default {
+    name: 'Dashboard',
+    components: {
+        EmailCard,
+    },
+    data() {
+        return {
+            currentPage: 1,
+            order: 'is-centered',
+            isSimple: true,
+            isRounded: true,
+        };
+    },
+    computed: {
+        ...mapGetters([
+            'emailsPerPage',
+        ]),
+        total(): number {
+            return testData.length;
         },
-        data() {
-            return {
-                inbox: [
-                    {
-                        sender: 'Lorem',
-                        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce in ornare orci. ' +
-                            'Sed in velit id dolor pulvinar efficitur nec pellentesque purus. Ut non mauris justo. ' +
-                            'Phasellus maximus a nibh in lacinia. Aenean mollis consequat purus sit amet dictum. ',
-                        timestamp: '9:35am',
-                    },
-                    {
-                        sender: 'Ipsum',
-                        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' +
-                            'Pellentesque id nisl nec sapien consequat pulvinar a dignissim nibh. ' +
-                            'Curabitur mi velit, consequat non tortor in, commodo varius lorem. ' +
-                            'Curabitur ullamcorper. ',
-                        timestamp: '9:37am',
-                    },
-                    {
-                        sender: 'Lorem',
-                        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce in ornare orci. ' +
-                            'Sed in velit id dolor pulvinar efficitur nec pellentesque purus. Ut non mauris justo. ' +
-                            'Phasellus maximus a nibh in lacinia. Aenean mollis consequat purus sit amet dictum. ',
-                        timestamp: '9:35am',
-                    },
-                    {
-                        sender: 'Ipsum',
-                        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' +
-                            'Pellentesque id nisl nec sapien consequat pulvinar a dignissim nibh. ' +
-                            'Curabitur mi velit, consequat non tortor in, commodo varius lorem. ' +
-                            'Curabitur ullamcorper. ',
-                        timestamp: '9:37am',
-                    },
-                    {
-                        sender: 'Lorem',
-                        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce in ornare orci. ' +
-                            'Sed in velit id dolor pulvinar efficitur nec pellentesque purus. Ut non mauris justo. ' +
-                            'Phasellus maximus a nibh in lacinia. Aenean mollis consequat purus sit amet dictum. ',
-                        timestamp: '9:35am',
-                    },
-                    {
-                        sender: 'Ipsum',
-                        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' +
-                            'Pellentesque id nisl nec sapien consequat pulvinar a dignissim nibh. ' +
-                            'Curabitur mi velit, consequat non tortor in, commodo varius lorem. ' +
-                            'Curabitur ullamcorper. ',
-                        timestamp: '9:37am',
-                    },
-                    {
-                        sender: 'Lorem',
-                        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce in ornare orci. ' +
-                            'Sed in velit id dolor pulvinar efficitur nec pellentesque purus. Ut non mauris justo. ' +
-                            'Phasellus maximus a nibh in lacinia. Aenean mollis consequat purus sit amet dictum. ',
-                        timestamp: '9:35am',
-                    },
-                    {
-                        sender: 'Ipsum',
-                        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' +
-                            'Pellentesque id nisl nec sapien consequat pulvinar a dignissim nibh. ' +
-                            'Curabitur mi velit, consequat non tortor in, commodo varius lorem. ' +
-                            'Curabitur ullamcorper. ',
-                        timestamp: '9:37am',
-                    },
-                ],
-                total: 0,
-                current: 1,
-                perPage: 10,
-                rangeBefore: 0,
-                rangeAfter: 0,
-                order: 'is-centered',
-                size: '',
-                isSimple: true,
-                isRounded: true,
-            };
+        perPage(this: { emailsPerPage: number }): number {
+            return this.emailsPerPage;
         },
-        computed: {
-            ...mapGetters([
-                'emailsPerPage',
-            ]),
+        paginatedItems(this: { currentPage: number, perPage: number}): [Email] {
+            const pageNumber = this.currentPage - 1;
+            return testData.slice(pageNumber * this.perPage, (pageNumber + 1) * this.perPage);
+
         },
-        mounted() {
-            this.total = this.inbox.length;
-            this.perPage = this.emailsPerPage;
-        },
-    };
+    },
+    created() {
+        testData.sort((a: Email, b: Email) => -a.datetime.localeCompare(b.datetime));
+    },
+};
 </script>
 
 <style scoped lang="scss">
     .container {
-        margin: 33vh 5vw;
+        margin: 25vh 5vw 5vh;
     }
 </style>

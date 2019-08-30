@@ -11,16 +11,35 @@
             </div>
         </div>
         <div class="level-item level-right">
-            {{ email.timestamp }}
+            {{ dateTimePastDay(email.datetime) }}
         </div>
     </div>
 </template>
 
 <script lang="ts">
+    import { Email } from '@/models/email.ts';
+
     export default {
         name: 'EmailCard',
         props: {
-            email: { type: Object, required: true },
+            email: {
+                type: Object as () => Email,
+                required: true,
+            },
+        },
+        methods: {
+            dateTimePastDay(datetime: string): string {
+                const emailDate = new Date(datetime);
+                // TODO Update once API call is made
+                const day = new Date('2019-08-28T23:59:59Z');
+
+                const dayInMillis = 60 * 60 * 24 * 1000;
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+                return (day.getTime() - emailDate.getTime()) > dayInMillis
+                    ? months[emailDate.getMonth()] + ' ' + emailDate.getDate()
+                    : emailDate.getHours() + ':' + emailDate.getMinutes();
+            },
         },
     };
 </script>
@@ -35,7 +54,7 @@
         .level-left {
             p {
                 margin-left: 1vw;
-                width: 3vw;
+                width: 10vw;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -45,7 +64,7 @@
         .email-content {
             margin-left: 2vw;
             display: inline-block;
-            width: 58vw;
+            width: 48vw;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
