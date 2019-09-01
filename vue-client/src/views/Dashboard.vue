@@ -4,7 +4,7 @@
             <ul>
                 <email-card v-for="email in paginatedItems"
                             v-bind:email="email"
-                            v-bind:key="email">
+                            v-bind:key="email.sender">
                 </email-card>
             </ul>
             <b-pagination
@@ -56,7 +56,6 @@ export default {
         paginatedItems(this: { currentPage: number, perPage: number}): [Email] {
             const pageNumber = this.currentPage - 1;
             return testData.slice(pageNumber * this.perPage, (pageNumber + 1) * this.perPage);
-
         },
     },
     created() {
@@ -67,6 +66,6 @@ export default {
 
 <style scoped lang="scss">
     .container {
-        margin: 25vh 5vw 5vh;
+        margin: 10vh 5vw 5vh;
     }
 </style>

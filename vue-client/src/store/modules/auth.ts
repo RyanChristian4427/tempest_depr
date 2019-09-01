@@ -7,7 +7,13 @@ import {
     AUTH_REGISTER,
 } from '@/store/actions/auth';
 
-import {AuthState, AuthSuccessResponse, LoginUser, RegisterUser} from '@/store/types/auth';
+import {
+    AuthState,
+    AuthSuccessResponse,
+    LoginUser,
+    RegisterUser,
+} from '@/store/types/auth';
+
 import ApiService from '@/services/api-service';
 import JwtService from '@/services/jwt-service';
 import User from '@/models/user';
@@ -36,7 +42,7 @@ const getters = {
 };
 
 const actions = {
-    [AUTH_REQUEST]: ({ commit }: any, credentials: LoginUser) => {
+    [AUTH_REQUEST]({ commit }: any, credentials: LoginUser) {
         return new Promise((resolve, reject) => {
             commit(AUTH_REQUEST);
             ApiService.post('users/login', credentials)
@@ -56,10 +62,10 @@ const actions = {
                 });
         });
     },
-    [AUTH_ERROR]: ({ commit }: any, error: string) => {
+    [AUTH_ERROR]({ commit }: any, error: string) {
         commit(AUTH_ERROR, error);
     },
-    [AUTH_LOGOUT]: ({ commit }: any) => {
+    [AUTH_LOGOUT]({ commit }: any) {
         commit(AUTH_LOGOUT);
     },
     [AUTH_REGISTER]({ commit }: any, credentials: RegisterUser) {
