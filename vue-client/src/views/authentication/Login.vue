@@ -41,8 +41,8 @@ export default {
             },
         };
     },
-    created(): any {
-        return this.methods.logout();
+    created(this: any) {
+        this.logout();
     },
     computed: {
         ...mapGetters(
@@ -59,8 +59,8 @@ export default {
         ...mapActions(
             [AUTH_REQUEST, AUTH_LOGOUT, AUTH_ERROR],
         ),
-        async logout() {
-            return AUTH_LOGOUT;
+        logout(this: { AUTH_LOGOUT: any }) {
+            this.AUTH_LOGOUT();
         },
         async login(this: { user: { email: string, password: string}, AUTH_REQUEST: any,
                     AUTH_ERROR: any, $router: any }) {
