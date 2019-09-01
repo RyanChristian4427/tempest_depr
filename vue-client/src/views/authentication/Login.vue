@@ -41,9 +41,9 @@ export default {
             },
         };
     },
-    created(this: any) {
-        this.logout();
-    },
+    // created(this: any) {
+    //     this.logout();
+    // },
     computed: {
         ...mapGetters(
             ['errors', 'status'],

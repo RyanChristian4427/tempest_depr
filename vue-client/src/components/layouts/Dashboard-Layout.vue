@@ -4,6 +4,7 @@
             <h2 class="title has-text-centered">Tempest</h2>
         </div>
         <div class="main-content column">
+            <core-toolbar/>
             <router-view class="page-content"/>
             <core-footer/>
         </div>
@@ -12,11 +13,13 @@
 
 <script lang="ts">
     import CoreFooter from '@/components/core/Footer.vue';
+    import CoreToolbar from '@/components/core/Toolbar.vue';
 
     export default {
         name: 'Dashboard-Layout',
         components: {
             CoreFooter,
+            CoreToolbar,
         },
     };
 </script>

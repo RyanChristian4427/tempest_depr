@@ -19,7 +19,6 @@
     export default {
         data: () => ({
             links: [
-                { name: 'Home', link: '/' },
                 { name: 'GitHub', link: 'https://github.com/RyanChristian4427' },
             ],
         }),
