@@ -31,14 +31,22 @@
             dateTimePastDay(datetime: string): string {
                 const emailDate = new Date(datetime);
                 // TODO Update once API call is made
-                const day = new Date('2019-08-28T23:59:59Z');
+                const today = new Date('2019-08-28T23:59:59Z');
 
                 const dayInMillis = 60 * 60 * 24 * 1000;
                 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-                return (day.getTime() - emailDate.getTime()) > dayInMillis
-                    ? months[emailDate.getMonth()] + ' ' + emailDate.getDate()
-                    : emailDate.getHours() + ':' + emailDate.getMinutes();
+                // If an email is more than 6 months old (irrespective of date within month), and is the year previous,
+                // give it the full date format. If it was in the past 24 hours, give it a timestamp, otherwise,
+                // give it mmm / dd format
+                const sixMonthsAgo = new Date();
+                sixMonthsAgo.setMonth(today.getMonth() - 6, 0);
+
+                return sixMonthsAgo > emailDate && today.getFullYear() !== emailDate.getFullYear()
+                    ? months[emailDate.getMonth()] + ' ' + emailDate.getUTCDate() + ' ' + emailDate.getFullYear()
+                    : today.getTime() - emailDate.getTime() < dayInMillis
+                        ? emailDate.getHours() + ':' + emailDate.getMinutes()
+                        : months[emailDate.getMonth()] + ' ' + emailDate.getUTCDate();
             },
         },
     };
