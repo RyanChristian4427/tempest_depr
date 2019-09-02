@@ -15,12 +15,12 @@
                         <b-input type="password" v-model="user.password" placeholder="Password"/>
                     </b-field>
                     <b-field grouped position="is-right">
-                        <b-button @click="login()" id="submit-button" type="is-xanadu is-rounded">
+                        <b-button @click="login" id="submit-button" type="is-xanadu is-rounded">
                             <b>Submit</b>
                         </b-button>
                     </b-field>
-                    <div id="error-message" v-if="isError !== ''">{{ isError }}</div>
-                    <b-loading :is-full-page="false" :active.sync="isLoading" :can-cancel="false"></b-loading>
+                    <div id="error-message" v-if="errors">{{ errors }}</div>
+                    <b-loading :is-full-page="false" :active.sync="loadingStatus" :can-cancel="false"></b-loading>
                 </div>
             </div>
         </section>
@@ -28,52 +28,52 @@
 </template>
 
 <script lang="ts">
-import { mapGetters, mapActions } from 'vuex';
-import {AUTH_REQUEST, AUTH_LOGOUT, AUTH_ERROR} from '@/store/actions/auth.ts';
+    import {Vue, Component} from 'vue-property-decorator';
+    import { Action, Getter } from 'vuex-class';
+    import {AUTH_REQUEST, AUTH_LOGOUT, AUTH_ERROR} from '@/store/actions/auth.ts';
 
-export default {
-    name: 'Login',
-    data() {
-        return {
-            user: {
-                email: '',
-                password: '',
-            },
+    interface IUser {
+        email: string;
+        password: string;
+    }
+
+    @Component
+    export default class Login extends Vue {
+        public user: IUser = {
+            email: '',
+            password: '',
         };
-    },
-    // created(this: any) {
-    //     this.logout();
-    // },
-    computed: {
-        ...mapGetters(
-            ['errors', 'status'],
-        ),
-        isError(this: { errors: string} ): string {
-            return this.errors;
-        },
-        isLoading(this: { status: string } ): boolean {
-            return this.status === 'Logging in';
-        },
-    },
-    methods: {
-        ...mapActions(
-            [AUTH_REQUEST, AUTH_LOGOUT, AUTH_ERROR],
-        ),
-        logout(this: { AUTH_LOGOUT: any }) {
-            this.AUTH_LOGOUT();
-        },
-        async login(this: { user: { email: string, password: string}, AUTH_REQUEST: any,
-                    AUTH_ERROR: any, $router: any }) {
+
+        @Getter('errors') public errors!: string;
+        @Getter('status') private status!: string;
+        @Action(AUTH_REQUEST) private AUTH_REQUEST: any;
+        @Action(AUTH_LOGOUT) private AUTH_LOGOUT: any;
+        @Action(AUTH_ERROR) private AUTH_ERROR: any;
+
+        // Computed
+        get loadingStatus() {
+            return this.status === 'Authenticating';
+        }
+
+        // Methods
+        public async login() {
             const { user } = this;
             if (user.email && user.password) {
                 await this.AUTH_REQUEST({user})
                     .then(() => this.$router.push({ name: 'Dashboard' }));
             } else {
-                await this.AUTH_ERROR('Please provide your account credentials before submitting');
+                this.AUTH_ERROR('Please provide your account credentials before submitting');
             }
-        },
-    },
-};
+        }
+
+        protected logout() {
+            this.AUTH_LOGOUT();
+        }
+
+        private created() {
+            this.logout();
+        }
+    }
 </script>
 
 <style lang="scss">

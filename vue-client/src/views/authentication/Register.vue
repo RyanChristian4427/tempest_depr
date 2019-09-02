@@ -21,68 +21,69 @@
                         <b-input type="password" v-model="user.password" placeholder="******"/>
                     </b-field>
                     <b-field grouped position="is-right">
-                        <b-button @click="register()" id="submit-button" type="is-xanadu is-rounded">
+                        <b-button @click="register" id="submit-button" type="is-xanadu is-rounded">
                             <b>Submit</b>
                         </b-button>
                     </b-field>
-                    <div id="error-message" v-if="error">{{ error }}</div>
-                    <b-loading :is-full-page="false" :active.sync="isLoading" :can-cancel="false"></b-loading>
+                    <div id="error-message" v-if="errors">{{ errors }}</div>
+                    <b-loading :is-full-page="false" :active.sync="loadingStatus" :can-cancel="false"></b-loading>
                 </div>
             </div>
         </section>
     </div>
 </template>
 
-<script>
-import { mapState } from 'vuex';
-import { AUTH_REGISTER, AUTH_LOGOUT } from '@/store/actions/auth.ts';
-export default {
-    name: 'Register',
-    data() {
-        return {
-            user: {
-                first_name: '',
-                last_name: '',
-                email: '',
-                password: '',
-            },
-            isLoading: false,
+<script lang="ts">
+    import { Vue, Component } from 'vue-property-decorator';
+    import { Action, Getter } from 'vuex-class';
+    import { AUTH_REGISTER, AUTH_LOGOUT, AUTH_ERROR } from '@/store/actions/auth.ts';
+
+    interface IUser {
+        first_name: string;
+        last_name: string;
+        email: string;
+        password: string;
+    }
+
+    @Component
+    export default class Register extends Vue {
+        public user: IUser = {
+            first_name: '',
+            last_name: '',
+            email: '',
+            password: '',
         };
-    },
-    created() {
-        return this.$store.dispatch(AUTH_LOGOUT);
-    },
-    computed: {
-        ...mapState({
-            error: (state) => state.auth.errors,
-        }),
-    },
-    methods: {
-        async register() {
-            this.openLoading();
+
+        @Getter('errors') public errors!: string;
+        @Getter('status') private status!: string;
+        @Action(AUTH_REGISTER) private AUTH_REGISTER: any;
+        @Action(AUTH_LOGOUT) private AUTH_LOGOUT: any;
+        @Action(AUTH_ERROR) private AUTH_ERROR: any;
+
+        // Computed
+        get loadingStatus() {
+            return this.status === 'Authenticating';
+        }
+
+        // Methods
+        public async register() {
             const { user } = this;
             if (user.first_name && user.last_name && user.email && user.password) {
-                this.injectErrorMessage('');
-                await this.$store
-                    .dispatch(AUTH_REGISTER, { user })
-                    .then(() => this.isLoading = false)
-                    .then(() => this.$router.push({ name: 'Welcome' }));
+                await this.AUTH_REGISTER({user})
+                    .then(() => this.$router.push({ name: 'Dashboard' }));
             } else {
-                this.injectErrorMessage('Please provide your new account credentials before submitting');
-                this.isLoading = false;
+                this.AUTH_ERROR('Please provide your new account credentials before submitting');
             }
-        },
-        openLoading() {
-            this.isLoading = true;
-            setTimeout(() => {
-                this.isLoading = false;
-            }, 5000);
-        },
-        injectErrorMessage(message) {
-            this.$store.state.auth.errors = message;
-        },
-    },
-};
+        }
+
+        protected logout() {
+            this.AUTH_LOGOUT();
+        }
+
+        private created() {
+            this.logout();
+        }
+    }
 </script>
 
 <style lang="scss">

@@ -8,7 +8,7 @@
                 </a>
 
                 <b-dropdown-item custom>
-                    Logged in as <b>{{ user.getName() }}</b>
+                    Logged in as <b>{{ user.name }}</b>
                 </b-dropdown-item>
 
                 <b-dropdown-item value="home">
@@ -33,30 +33,28 @@
 </template>
 
 <script lang="ts">
-    import { mapGetters, mapActions } from 'vuex';
-    import { AUTH_LOGOUT, AUTH_CURRENT_USER } from '@/store/actions/auth';
+    import {Vue, Component} from 'vue-property-decorator';
     import User from '@/models/user';
+    import { Action, Getter } from 'vuex-class';
+    import { AUTH_LOGOUT } from '@/store/actions/auth';
 
-    export default {
-        name: 'Toolbar.vue',
-        computed: {
-            ...mapGetters(
-                ['currentUser'],
-            ),
-            user(this: { currentUser: User }) {
-                return this.currentUser;
-            },
-        },
-        methods: {
-            ...mapActions(
-                [AUTH_LOGOUT],
-            ),
-            logout(this: { AUTH_LOGOUT: any, $router: any }) {
-                this.AUTH_LOGOUT()
-                    .then(() => this.$router.push({ name: 'Login' }));
-            }
+    @Component
+    export default class Toolbar extends Vue {
+        @Getter('currentUser') private currentUser!: User;
+        @Action(AUTH_LOGOUT) private AUTH_LOGOUT: any;
+
+
+        // Computed
+        get user() {
+            return this.currentUser;
         }
-    };
+
+        // Methods
+        public logout() {
+            this.AUTH_LOGOUT()
+                .then(async () => await this.$router.push({ name: 'Login' }));
+        }
+    }
 </script>
 
 <style scoped lang="scss">
