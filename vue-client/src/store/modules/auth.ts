@@ -20,7 +20,7 @@ import User from '@/models/user';
 
 
 const state: AuthState = {
-    user: {} as User,
+    user: new User('', '', ''),
     status: '',
     errors: '',
     authenticated: !!JwtService.getToken(),
@@ -85,7 +85,7 @@ const actions = {
 
 const mutations = {
     [AUTH_REQUEST]: (state: AuthState) => {
-        state.status = 'Logging in';
+        state.status = 'Authenticating';
         state.errors = '';
     },
     [AUTH_FIRST_TIME]: (state: AuthState) => {

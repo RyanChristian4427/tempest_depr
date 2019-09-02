@@ -16,7 +16,9 @@ router.beforeEach((to, from, next) => {
     const authRequired = !publicPages.includes(to.path);
     const authenticated = store.getters.isAuthenticated;
 
-    return (authRequired && !authenticated) ? next('/login') : next();
+    return (authRequired && !authenticated)
+        ? next('/login')
+        : next();
 });
 
 const DEFAULT_TITLE = 'Tempest';

@@ -2,66 +2,61 @@
     <section>
         <div class="container">
             <ul>
-                <email-card v-for="email in paginatedItems"
+                <email-card v-for="email in paginatedItems()"
                             v-bind:email="email"
                             v-bind:key="email.sender">
                 </email-card>
             </ul>
             <b-pagination
-                    :total="this.total"
+                    :total="total"
                     :current.sync="currentPage"
-                    :order="order"
+                    :order="buttonAlignment"
                     :simple="isSimple"
                     :rounded="isRounded"
-                    :per-page="this.perPage">
+                    :per-page="emailsPerPage">
             </b-pagination>
         </div>
     </section>
 </template>
 
 <script lang="ts">
-import { mapGetters } from 'vuex';
-import EmailCard from '@/components/tempest/EmailCard.vue';
-const testData = require('@/assets/data.json');
+    import {Vue, Component} from 'vue-property-decorator';
+    import { Getter } from 'vuex-class';
+    import EmailCard from '@/components/tempest/EmailCard.vue';
+    import data from '../assets/data.json';
 
-interface Email {
-    sender: string;
-    content: string;
-    datetime: string;
-}
+    interface Email {
+        sender: string;
+        content: string;
+        datetime: string;
+    }
 
-export default {
-    name: 'Dashboard',
-    components: {
-        EmailCard,
-    },
-    data() {
-        return {
-            currentPage: 1,
-            order: 'is-centered',
-            isSimple: true,
-            isRounded: true,
-        };
-    },
-    computed: {
-        ...mapGetters([
-            'emailsPerPage',
-        ]),
-        total(): number {
-            return testData.length;
+    @Component({
+        components: {
+            EmailCard,
         },
-        perPage(this: { emailsPerPage: number }): number {
-            return this.emailsPerPage;
-        },
-        paginatedItems(this: { currentPage: number, perPage: number}): [Email] {
+    })
+    export default class Dashboard extends Vue {
+        public currentPage: number = 1;
+        public buttonAlignment: string = 'is-centered';
+        public isSimple: boolean = true;
+        public isRounded: boolean = true;
+
+        @Getter('emailsPerPage') public emailsPerPage!: number;
+
+        public total: number = data.length;
+
+        // Methods
+        public paginatedItems() {
             const pageNumber = this.currentPage - 1;
-            return testData.slice(pageNumber * this.perPage, (pageNumber + 1) * this.perPage);
-        },
-    },
-    created() {
-        testData.sort((a: Email, b: Email) => -a.datetime.localeCompare(b.datetime));
-    },
-};
+            return data.slice(pageNumber * this.emailsPerPage, (pageNumber + 1) * this.emailsPerPage);
+        }
+
+        // noinspection JSMethodCanBeStatic
+        private created() {
+            data.sort((a: Email, b: Email) => -a.datetime.localeCompare(b.datetime));
+        }
+    }
 </script>
 
 <style scoped lang="scss">
