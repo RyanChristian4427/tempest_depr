@@ -31,6 +31,7 @@
     import {Vue, Component} from 'vue-property-decorator';
     import { Action, Getter } from 'vuex-class';
     import {AUTH_REQUEST, AUTH_LOGOUT, AUTH_ERROR} from '@/store/actions/auth.ts';
+    import { USER_OPTIONS_REQUEST } from '@/store/actions/user_options';
 
     interface IUser {
         email: string;
@@ -49,6 +50,7 @@
         @Action(AUTH_REQUEST) private AUTH_REQUEST: any;
         @Action(AUTH_LOGOUT) private AUTH_LOGOUT: any;
         @Action(AUTH_ERROR) private AUTH_ERROR: any;
+        @Action(USER_OPTIONS_REQUEST) private USER_OPTIONS_REQUEST: any;
 
         // Computed
         get loadingStatus() {
@@ -60,6 +62,7 @@
             const { user } = this;
             if (user.email && user.password) {
                 await this.AUTH_REQUEST({user})
+                    .then(async () => await this.USER_OPTIONS_REQUEST())
                     .then(() => this.$router.push({ name: 'Dashboard' }));
             } else {
                 this.AUTH_ERROR('Please provide your account credentials before submitting');
