@@ -73,6 +73,7 @@ const actions = {
             ApiService.post('users/register', credentials)
                 .then(({ data }) => {
                     commit(AUTH_SUCCESS, data.user);
+                    ApiService.setHeader();
                     resolve(data);
                 })
                 .catch(({ response }) => {
