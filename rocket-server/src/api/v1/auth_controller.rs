@@ -6,7 +6,6 @@ use rocket_contrib::json::{Json, JsonValue};
 use serde::Deserialize;
 use validator::Validate;
 
-
 #[derive(Deserialize)]
 pub struct NewUser {
     user: NewUserData,

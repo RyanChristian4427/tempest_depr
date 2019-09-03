@@ -32,7 +32,13 @@ fn test_register() {
 /// Registration with the same email must fail
 fn test_register_with_duplicated_email() {
     let client = test_client();
-    register(client, FIRST_NAME, LAST_NAME, "original@example.com", PASSWORD);
+    register(
+        client,
+        FIRST_NAME,
+        LAST_NAME,
+        "original@example.com",
+        PASSWORD,
+    );
 
     let response = &mut client
         .post("/api/v1/users/register")
@@ -97,7 +103,6 @@ fn test_incorrect_login() {
     assert_eq!(login_error, Some("is invalid"));
 }
 
-
 // Utility
 
 /// Assert that body contains "user" response with expected fields.
@@ -106,8 +111,14 @@ fn check_user_response(response: &mut LocalResponse) {
     let user = value.get("user").expect("must have a 'user' field");
 
     assert_eq!(user.get("email").expect("user has email"), EMAIL);
-    assert_eq!(user.get("first_name").expect("user has a first name"), FIRST_NAME);
-    assert_eq!(user.get("last_name").expect("user has a last name"), LAST_NAME);
+    assert_eq!(
+        user.get("first_name").expect("user has a first name"),
+        FIRST_NAME
+    );
+    assert_eq!(
+        user.get("last_name").expect("user has a last name"),
+        LAST_NAME
+    );
     assert!(user.get("token").is_some());
 }
 
