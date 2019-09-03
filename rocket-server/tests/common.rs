@@ -2,11 +2,11 @@
 
 //! This file contains utility functions used by all tests.
 
-use tempest;
+use once_cell::sync::OnceCell;
 use rocket::http::{ContentType, Header, Status};
 use rocket::local::{Client, LocalResponse};
 use serde_json::Value;
-use once_cell::sync::OnceCell;
+use tempest;
 
 pub const FIRST_NAME: &'static str = "smoke";
 pub const LAST_NAME: &'static str = "test";
@@ -23,14 +23,12 @@ macro_rules! json_string {
 
 pub type Token = String;
 
-
 pub fn test_client() -> &'static Client {
     static INSTANCE: OnceCell<Client> = OnceCell::new();
     INSTANCE.get_or_init(|| {
         let rocket = tempest::rocket();
         Client::new(rocket).expect("valid rocket instance")
     })
-
 }
 
 /// Retrieve a token registering a user if required.
@@ -86,6 +84,6 @@ pub fn register(client: &Client, first_name: &str, last_name: &str, email: &str,
 
     match response.status() {
         Status::Ok | Status::UnprocessableEntity => {} // ok,
-        status => panic!("Registration failed: {}", status)
+        status => panic!("Registration failed: {}", status),
     }
 }
