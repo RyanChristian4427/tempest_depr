@@ -110,13 +110,13 @@ fn check_user_response(response: &mut LocalResponse) {
     let value = response_json_value(response);
     let user = value.get("user").expect("must have a 'user' field");
 
-    assert_eq!(user.get("email").expect("user has email"), EMAIL);
+    assert_eq!(user.get("email").expect("must have a 'email' field"), EMAIL);
     assert_eq!(
-        user.get("first_name").expect("user has a first name"),
+        user.get("first_name").expect("must have a 'first_name' field"),
         FIRST_NAME
     );
     assert_eq!(
-        user.get("last_name").expect("user has a last name"),
+        user.get("last_name").expect("must have a 'last_name' field"),
         LAST_NAME
     );
     assert!(user.get("token").is_some());

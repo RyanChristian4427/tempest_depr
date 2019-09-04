@@ -41,7 +41,7 @@ pub fn login(client: &Client) -> Token {
 
 /// Make an authorization header.
 pub fn token_header(token: Token) -> Header<'static> {
-    Header::new("authorization", format!("Token {}", token))
+    Header::new("authorization", format!("Bearer {}", token))
 }
 
 /// Helper function for converting response to json value.
