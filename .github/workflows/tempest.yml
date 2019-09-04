@@ -9,6 +9,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+      with:
+        rust-version: nightly
     - name: Check
       run: cargo check --manifest-path=rocket-server/Cargo.toml --verbose
     - name: Run tests
