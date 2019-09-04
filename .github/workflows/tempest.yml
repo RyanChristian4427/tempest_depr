@@ -8,9 +8,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: hecrj/setup-rust-action@master
       with:
-        rust-version: nightly
+        rust-version: nightly 
+    - uses: actions/checkout@v1
     - name: Check
       run: cargo check --manifest-path=rocket-server/Cargo.toml --verbose
     - name: Run tests
