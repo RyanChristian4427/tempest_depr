@@ -10,6 +10,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Check
-      run: cargo check --verbose
+      run: cargo check --manifest-path=rocket-server/Cargo.toml --verbose
     - name: Run tests
-      run: cargo test --verbose
+      run: cargo test --manifest-path=rocket-server/Cargo.toml --verbose
