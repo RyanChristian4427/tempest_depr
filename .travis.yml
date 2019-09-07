@@ -4,13 +4,6 @@ cache: cargo
 
 services:
   - docker
-  
-env:
-  - diesel-cli ='docker run --rm \
-                    -v "$PWD:/volume" \
-                    -w /volume \
-                    --network="rocket-server_default" \
-                    -it ryanchristian4427/diesel-cli migration run'
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
@@ -21,7 +14,11 @@ before_install:
 before_script:
   - sudo /etc/init.d/postgresql stop
   - docker-compose -f rocket-server/docker-compose.yml up --build -d
-  - diesel-cli migration run
+  - docker run --rm \
+         -v "$PWD:/volume" \
+         -w /volume \
+         --network="rocket-server_default" \
+         -it ryanchristian4427/diesel-cli migration run              
 
 script:
   - 'cargo check --manifest-path=rocket-server/Cargo.toml --verbose'
