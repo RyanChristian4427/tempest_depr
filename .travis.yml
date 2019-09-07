@@ -1,0 +1,21 @@
+language: rust
+rust: nightly
+cache: cargo
+
+services:
+  - docker
+  
+env:
+  - diesel-cli ='docker run --rm \
+                    -v "$PWD:/volume" \
+                    -w /volume \
+                    --network="rocket-server_default" \
+                    -it ryanchristian4427/diesel-cli migration run'
+  
+before_script:
+  - diesel-cli migration run
+
+script:
+  - 'cargo check --verbose'
+  - 'cargo test --verbose'
+
