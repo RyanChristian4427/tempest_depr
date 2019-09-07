@@ -6,7 +6,7 @@ services:
   - docker
 
 env:
-  - diesel-cli = 'docker run --rm -v "$PWD:/volume" -w /volume --network="rocket-server_default" -it ryanchristian4427/diesel-cli'
+  - diesel-cli = 'docker run --rm -v "$PWD:/volume" -w /volume --network="rocket-server_default" -it ryanchristian4427/diesel-cli migration run'
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
@@ -18,7 +18,7 @@ before_script:
   - sudo /etc/init.d/postgresql stop
   - cd rocket-server
   - docker-compose up --build -d
-  - eval $diesel-cli migration run
+  - eval $diesel-cli
 
 script:
   - 'cargo check --verbose'
