@@ -13,6 +13,7 @@ env:
                     -it ryanchristian4427/diesel-cli migration run'
   
 before_script:
+  - docker-compose up --build -d
   - diesel-cli migration run
 
 script:
