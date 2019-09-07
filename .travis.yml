@@ -19,7 +19,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
     
 before_script:
-  - docker --version
+  - sudo /etc/init.d/postgresql stop
   - docker-compose -f rocket-server/docker-compose.yml up --build -d
   - diesel-cli migration run
 
