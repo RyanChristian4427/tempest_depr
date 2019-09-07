@@ -19,7 +19,7 @@ before_script:
   - sudo /etc/init.d/postgresql stop
   - cd rocket-server
   - docker-compose up --build -d
-  - eval $diesel-cli
+  - docker run --rm -v "$PWD:/volume" -w /volume --network="rocket-server_default" -it ryanchristian4427/diesel-cli migration run
 
 script:
   - 'cargo check --verbose'
