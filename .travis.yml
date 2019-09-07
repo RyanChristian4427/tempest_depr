@@ -6,7 +6,8 @@ services:
   - docker
 
 env:
-  - diesel-cli = 'docker run --rm -v "$PWD:/volume" -w /volume --network="rocket-server_default" -it ryanchristian4427/diesel-cli migration run'
+  global:
+    - diesel-cli = 'docker run --rm -v "$PWD:/volume" -w /volume --network="rocket-server_default" -it ryanchristian4427/diesel-cli migration run'
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
