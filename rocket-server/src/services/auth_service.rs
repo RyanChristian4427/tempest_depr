@@ -1,8 +1,7 @@
 use crate::config;
-use crate::db::users_repository::{self, UserCreationError};
+use crate::db::{Conn, users_repository::{self, UserCreationError}};
 use crate::models::user::User;
 
-use diesel::pg::PgConnection;
 use rocket::http::Status;
 use rocket::request::{self, FromRequest, Request};
 use rocket::Outcome;
@@ -16,13 +15,13 @@ pub fn register(
     last_name: &str,
     email: &str,
     password: &str,
-    conn: &PgConnection,
+    conn: Conn,
 ) -> Result<User, UserCreationError> {
-    users_repository::register(&first_name, &last_name, &email, &password, &conn)
+    users_repository::register(&first_name, &last_name, &email, &password, conn)
 }
 
-pub fn login(email: &str, password: &str, conn: &PgConnection) -> Option<User> {
-    users_repository::login(&email, &password, &conn)
+pub fn login(email: &str, password: &str, conn: Conn) -> Option<User> {
+    users_repository::login(&email, &password, conn)
 }
 
 #[derive(Debug, Deserialize, Serialize)]

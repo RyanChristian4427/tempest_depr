@@ -1,8 +1,8 @@
 use crate::models::user::User;
 use crate::schema::users;
+use crate::db::Conn;
 
 use crypto::scrypt::{scrypt_check, scrypt_simple, ScryptParams};
-use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use diesel::result::{DatabaseErrorKind, Error};
 
@@ -35,7 +35,7 @@ pub fn register(
     last_name: &str,
     email: &str,
     password: &str,
-    conn: &PgConnection,
+    conn: Conn,
 ) -> Result<User, UserCreationError> {
     let hashed_password =
         &scrypt_simple(password, &ScryptParams::new(14, 8, 1)).expect("hash error");
@@ -49,14 +49,14 @@ pub fn register(
 
     diesel::insert_into(users::table)
         .values(new_user)
-        .get_result::<User>(conn)
+        .get_result::<User>(&*conn)
         .map_err(Into::into)
 }
 
-pub fn login(email: &str, password: &str, conn: &PgConnection) -> Option<User> {
+pub fn login(email: &str, password: &str, conn: Conn) -> Option<User> {
     let user = users::table
         .filter(users::email.eq(email))
-        .get_result::<User>(conn)
+        .get_result::<User>(&*conn)
         .map_err(|err| eprintln!("login_user: {}", err))
         .ok()?;
 
