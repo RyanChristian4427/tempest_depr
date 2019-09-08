@@ -7,12 +7,15 @@ services:
   - docker
     
 before_script:
-  - sudo /etc/init.d/postgresql stop
   - cd rocket-server
   - docker-compose up --build -d
   - docker run --rm -v "$PWD:/volume" -w /volume --network="rocket-server_default" -it ryanchristian4427/diesel-cli migration run
 
-script:
-  - 'cargo check'
-  - 'cargo test'
 
+jobs:
+  include:
+    - stage: "Rust"
+      name: "Cargo Build"
+      script: "cargo build"
+    - name: "Cargo Test"
+      script: "cargo test"
