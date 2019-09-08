@@ -1,38 +1,48 @@
 import {
     AUTH_REQUEST,
+    AUTH_FIRST_TIME,
     AUTH_SUCCESS,
     AUTH_ERROR,
     AUTH_LOGOUT,
     AUTH_REGISTER,
 } from '@/store/actions/auth';
 
-import {AuthState} from '@/store/types/auth';
+import {
+    AuthState,
+    AuthSuccessResponse,
+    LoginUser,
+    RegisterUser,
+} from '@/store/types/auth';
+
 import ApiService from '@/services/api-service';
 import JwtService from '@/services/jwt-service';
 import User from '@/models/user';
 
 
 const state: AuthState = {
-    user: {} as User,
+    user: new User('', '', ''),
     status: '',
-    errors: {} as string,
+    errors: '',
     authenticated: !!JwtService.getToken(),
 };
 
 const getters = {
-    currentUser(state: { user: any; }) {
+    currentUser(state: AuthState) {
         return state.user;
     },
-    isAuthenticated(state: { isAuthenticated: boolean; }) {
-        return state.isAuthenticated;
+    isAuthenticated(state: AuthState) {
+        return state.authenticated;
     },
-    status(state: { status: any }) {
+    status(state: AuthState) {
         return state.status;
+    },
+    errors(state: AuthState) {
+        return state.errors;
     },
 };
 
 const actions = {
-    [AUTH_REQUEST]: ({ commit }: any, credentials: { user: { email: string, password: string }}) => {
+    [AUTH_REQUEST]({ commit }: any, credentials: LoginUser) {
         return new Promise((resolve, reject) => {
             commit(AUTH_REQUEST);
             ApiService.post('users/login', credentials)
@@ -51,26 +61,45 @@ const actions = {
                     }
                 });
         });
-
     },
-    [AUTH_LOGOUT]: ({ commit }: any) => {
+    [AUTH_ERROR]({ commit }: any, error: string) {
+        commit(AUTH_ERROR, error);
+    },
+    [AUTH_LOGOUT]({ commit }: any) {
         commit(AUTH_LOGOUT);
+    },
+    [AUTH_REGISTER]({ commit }: any, credentials: RegisterUser) {
+        return new Promise((resolve, reject) => {
+            ApiService.post('users/register', credentials)
+                .then(({ data }) => {
+                    commit(AUTH_SUCCESS, data.user);
+                    ApiService.setHeader();
+                    resolve(data);
+                })
+                .catch(({ response }) => {
+                    commit(AUTH_ERROR, response.data.errors);
+                    reject(response);
+                });
+        });
     },
 };
 
 const mutations = {
     [AUTH_REQUEST]: (state: AuthState) => {
-        state.status = 'Logging in';
+        state.status = 'Authenticating';
         state.errors = '';
     },
-    [AUTH_SUCCESS]: (state: AuthState, user: { email: string, first_name: string,
-                                                last_name: string, token: string} ) => {
+    [AUTH_FIRST_TIME]: (state: AuthState) => {
+        state.status = 'First time user';
+    },
+    [AUTH_SUCCESS]: (state: AuthState, user: AuthSuccessResponse ) => {
         state.status = 'Logged in';
         state.user = new User(user.first_name + ' ' + user.last_name, user.email, user.token);
         state.authenticated = true;
         JwtService.saveToken(user.token);
     },
     [AUTH_ERROR]: (state: AuthState, error: string) => {
+        state.status = '';
         state.errors = error;
     },
     [AUTH_LOGOUT]: (state: AuthState) => {

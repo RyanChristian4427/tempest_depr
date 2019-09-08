@@ -9,7 +9,7 @@
     import CoreFooter from '@/components/core/Footer.vue';
 
     export default {
-        name: 'Login-Layout',
+        name: 'Minimal-Layout',
         components: {
             CoreFooter,
         },

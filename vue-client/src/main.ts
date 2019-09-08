@@ -6,8 +6,11 @@ import Vue from 'vue';
 
 import '@/services';
 import '@/registerServiceWorker';
+import '@mdi/font/css/materialdesignicons.css';
 
-Vue.use(Buefy);
+Vue.use(Buefy, {
+  defaultIconPack: 'mdi',
+});
 
 
 Vue.config.productionTip = false;
