@@ -1,6 +1,7 @@
 language: rust
 rust: nightly
 cache: cargo
+dist: xenial
 
 services:
   - docker
@@ -10,6 +11,7 @@ services:
 #    - diesel-cli = 'docker run --rm -v "$PWD:/volume" -w /volume --network="rocket-server_default" -it ryanchristian4427/diesel-cli migration run'
 
 before_install:
+  - docker --version
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
@@ -17,6 +19,7 @@ before_install:
     
 before_script:
   - sudo /etc/init.d/postgresql stop
+  - docker --version
   - cd rocket-server
   - docker-compose up --build -d
   - docker run --rm -v "$PWD:/volume" -w /volume --network="rocket-server_default" -it ryanchristian4427/diesel-cli migration run
