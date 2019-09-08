@@ -1,4 +1,4 @@
-# Tempest
+# Tempest [![Build Status](https://travis-ci.org/RyanChristian4427/tempest.svg?branch=master)](https://travis-ci.org/RyanChristian4427/tempest)
 > Webmail API server and client
 
 Tempest will eventually be a webmail client that will not be unlike other webmail systems like Gmail. I had a desire to work with Rust, as well as work more with Vue, so I thought that this would make a great project.  
