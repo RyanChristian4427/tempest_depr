@@ -14,5 +14,5 @@ before_script:
 
 script:
   - 'cargo check'
-  - 'cargo test --verbose'
+  - 'cargo test'
 
