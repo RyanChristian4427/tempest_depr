@@ -18,9 +18,9 @@ mod models;
 mod schema;
 mod services;
 
-use rocket::{Rocket, Route, http::Method};
+use rocket::{http::Method, Rocket, Route};
 use rocket_contrib::json::JsonValue;
-use rocket_cors::{AllowedOrigins, AllowedHeaders};
+use rocket_cors::{AllowedHeaders, AllowedOrigins};
 use validator;
 
 #[catch(404)]
@@ -49,12 +49,16 @@ fn mounts() -> Vec<(&'static str, Vec<Route>)> {
 }
 
 fn cors() -> rocket_cors::Cors {
-    let allowed_origins = AllowedOrigins::some(&["https://localhost:8080"]);
+    let (allowed_origins, _failed_origins) =
+        AllowedOrigins::some(&["https://localhost:8080", "https://192.168.0.*:8080"]);
 
     // You can also deserialize this
     rocket_cors::Cors {
         allowed_origins,
-        allowed_methods: vec![Method::Get, Method::Post].into_iter().map(From::from).collect(),
+        allowed_methods: vec![Method::Get, Method::Post]
+            .into_iter()
+            .map(From::from)
+            .collect(),
         allowed_headers: AllowedHeaders::some(&["Authorization", "Accept", "Content-Type"]),
         allow_credentials: true,
         ..Default::default()
