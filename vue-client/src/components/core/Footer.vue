@@ -16,13 +16,18 @@
 </template>
 
 <script lang="ts">
-    export default {
-        data: () => ({
-            links: [
-                { name: 'Home', link: '/' },
-                { name: 'GitHub', link: 'https://github.com/RyanChristian4427' },
-            ],
-        }),
-    };
+    import {Vue, Component} from 'vue-property-decorator';
+
+    interface Link {
+        name: string;
+        link: string;
+    }
+
+    @Component
+    export default class Footer extends Vue {
+        public links: Link[] = [{
+            name: 'GitHub', link: 'https://github.com/RyanChristian4427',
+        }];
+    }
 </script>
 

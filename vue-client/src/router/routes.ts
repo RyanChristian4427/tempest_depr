@@ -1,24 +1,31 @@
-import Minimal from '@/components/layouts/Minimal.vue';
+import MinimalLayout from '@/components/layouts/Minimal-Layout.vue';
+import DashboardLayout from '@/components/layouts/Dashboard-Layout.vue';
 
 export default [
     {
         path: '/',
-        name: 'Home',
-        component: () => import('@/views/Home.vue'),
-    },
-    {
-        path: '/about',
-        name: 'About',
-        component: () => import('@/views/About.vue'),
-    },
-    {
-        path: '/',
-        component: Minimal,
+        component: MinimalLayout,
         children: [
             {
                 path: '/login',
                 name: 'Login',
                 component: () => import('@/views/authentication/Login.vue'),
+            },
+            {
+                path: '/register',
+                name: 'Register',
+                component: () => import('@/views/authentication/Register.vue'),
+            },
+        ],
+    },
+    {
+        path: '/',
+        component: DashboardLayout,
+        children: [
+            {
+                path: '/dashboard',
+                name: 'Dashboard',
+                component: () => import('@/views/Dashboard.vue'),
             },
         ],
     },

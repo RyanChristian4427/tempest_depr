@@ -1,15 +1,10 @@
-use crate::db::{self, users_repository::UserCreationError};
+use crate::db::{Conn, users_repository::UserCreationError};
 use crate::errors::{Errors, FieldValidator};
 use crate::services::auth_service::{login, register};
 
 use rocket_contrib::json::{Json, JsonValue};
 use serde::Deserialize;
 use validator::Validate;
-
-#[get("/hello")]
-pub fn index() -> JsonValue {
-    json!({ "Hello": "World!"})
-}
 
 #[derive(Deserialize)]
 pub struct NewUser {
@@ -26,8 +21,8 @@ struct NewUserData {
     password: Option<String>,
 }
 
-#[post("/users", format = "json", data = "<new_user>")]
-pub fn post_users_register(new_user: Json<NewUser>, conn: db::Conn) -> Result<JsonValue, Errors> {
+#[post("/users/register", format = "json", data = "<new_user>")]
+pub fn users_register(new_user: Json<NewUser>, conn: Conn) -> Result<JsonValue, Errors> {
     let new_user = new_user.into_inner().user;
 
     let mut extractor = FieldValidator::validate(&new_user);
@@ -38,7 +33,7 @@ pub fn post_users_register(new_user: Json<NewUser>, conn: db::Conn) -> Result<Js
 
     extractor.check()?;
 
-    register(&first_name, &last_name, &email, &password, &conn)
+    register(&first_name, &last_name, &email, &password, conn)
         .map(|user| json!({ "user": user.to_user_auth() }))
         .map_err(|error| {
             let _field = match error {
@@ -60,7 +55,7 @@ struct LoginUserData {
 }
 
 #[post("/users/login", format = "json", data = "<user>")]
-pub fn post_users_login(user: Json<LoginUser>, conn: db::Conn) -> Result<JsonValue, Errors> {
+pub fn users_login(user: Json<LoginUser>, conn: Conn) -> Result<JsonValue, Errors> {
     let user = user.into_inner().user;
 
     let mut extractor = FieldValidator::default();
@@ -68,7 +63,7 @@ pub fn post_users_login(user: Json<LoginUser>, conn: db::Conn) -> Result<JsonVal
     let password = extractor.extract("password", user.password);
     extractor.check()?;
 
-    login(&email, &password, &conn)
+    login(&email, &password, conn)
         .map(|user| json!({ "user": user.to_user_auth() }))
-        .ok_or_else(|| Errors::new(&[("Email or password", "is invalid")]))
+        .ok_or_else(|| Errors::new(&[("email or password", "is invalid")]))
 }

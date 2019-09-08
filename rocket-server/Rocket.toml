@@ -1,2 +1,3 @@
-[global.databases]
-diesel_postgres_pool = { url = "postgres://tempest_api:admin@localhost:5432/tempest" }
+[development]
+tls = { certs = "./certs/localhost.pem", key = "./certs/localhost-key.pem" }
+databases = { diesel_postgres_pool = { url = "postgres://tempest_api:admin@localhost:5432/tempest" }}
