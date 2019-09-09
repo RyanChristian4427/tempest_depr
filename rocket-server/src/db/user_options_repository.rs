@@ -1,7 +1,6 @@
+use crate::db::Conn;
 use crate::models::user_options::UserOptions;
 use crate::schema::user_options;
-use crate::db::Conn;
-
 
 use diesel::prelude::*;
 

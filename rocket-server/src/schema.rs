@@ -17,7 +17,4 @@ table! {
 
 joinable!(user_options -> users (user_id));
 
-allow_tables_to_appear_in_same_query!(
-    user_options,
-    users,
-);
+allow_tables_to_appear_in_same_query!(user_options, users,);

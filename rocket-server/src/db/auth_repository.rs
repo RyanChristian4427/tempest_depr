@@ -1,6 +1,6 @@
+use crate::db::Conn;
 use crate::models::user::User;
 use crate::schema::users;
-use crate::db::Conn;
 
 use crypto::scrypt::{scrypt_check, scrypt_simple, ScryptParams};
 use diesel::prelude::*;

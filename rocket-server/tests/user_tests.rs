@@ -2,9 +2,8 @@
 
 mod common;
 
-use common::{test_client, login, token_header, response_json_value};
+use common::{login, response_json_value, test_client, token_header};
 use rocket::local::LocalResponse;
-
 
 #[test]
 /// Try retrieving user options for an existing user
