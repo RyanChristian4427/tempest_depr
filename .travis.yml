@@ -3,16 +3,9 @@ rust: nightly
 dist: xenial
 sudo: false
 
-cache: cargo
-
 services:
   - docker
 
-env:
-  # Disable rustc info cache because it causes .rustc_info.json to keep
-  # changing which destablize the cache.
-  - 'CARGO_CACHE_RUSTC_INFO=0'
-    
 install:
   - cd rocket-server
   - docker-compose up --build -d
@@ -26,11 +19,3 @@ jobs:
       script: "cargo check"
     - name: "Cargo Test"
       script: "cargo test"
-
-before_cache:
-  - rm -rf target/debug/incremental
-  - rm -rf target/debug/{build,.fingerprint,deps}/tempest-*
-  - rm -rf target/debug/deps/libtempest-*
-  - rm -rf target/debug/tempest-*
-  - cargo clean -p tempest
-
