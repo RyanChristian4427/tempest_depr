@@ -1,7 +1,13 @@
 language: rust
 rust: nightly
-cache: cargo
 dist: xenial
+
+cache:
+  directories:
+    - /home/travis/.cargo
+
+before_cache:
+  - rm -rf /home/travis/.cargo/registry
 
 services:
   - docker
