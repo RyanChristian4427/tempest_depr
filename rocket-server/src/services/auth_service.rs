@@ -1,5 +1,8 @@
 use crate::config;
-use crate::db::{Conn, auth_repository::{self, UserCreationError}};
+use crate::db::{
+    auth_repository::{self, UserCreationError},
+    Conn,
+};
 use crate::models::user::User;
 
 use rocket::http::Status;
@@ -92,4 +95,47 @@ fn decode_token(token: &str) -> Option<Auth> {
             eprintln!("Auth decode error: {:?}", err);
             None
         })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const JWT_TOKEN: &'static str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ5YW5AZ21haWwuY29tIiwiZXhwIjoxNTczM\
+        Tg1ODQ1LCJpZCI6Mn0.IW8XrGMiPh0ZKTs8vICMgANP0-HuRbzd0JnW8H0y-Bg";
+
+    #[test]
+    fn test_extract_token() {
+        let mut auth_header: String = "Bearer ".to_owned();
+        auth_header.push_str(JWT_TOKEN);
+
+        let token: &str = extract_token_from_header(&auth_header).unwrap();
+        assert_eq!(JWT_TOKEN, token);
+    }
+
+    #[test]
+    fn test_extract_token_bad_prefix() {
+        let mut bad_auth_header: String = "Bad prefix ".to_owned();
+        bad_auth_header.push_str(JWT_TOKEN);
+
+        let token: Option<&str> = extract_token_from_header(&bad_auth_header);
+        assert!(token.is_none());
+    }
+
+    #[test]
+    fn test_decode_token() {
+        let auth: Auth = decode_token(JWT_TOKEN).unwrap();
+
+        assert_eq!(2, auth.id);
+        assert_eq!("ryan@gmail.com", auth.email);
+    }
+
+    #[test]
+    fn test_decode_token_bad_signature() {
+        const JWT_TOKEN_BAD_SIGNATURE: &'static str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ5YW5AZ21haWwuY29tIiw\
+            iZXhwIjoxNTczMTg1ODQ1LCJpZCI6Mn0.704WFHE8VY0_WLDfKRfYrKvXWARcgGEIieolR7TkAYU";
+
+        let auth: Option<Auth> = decode_token(JWT_TOKEN_BAD_SIGNATURE);
+        assert!(auth.is_none());
+    }
 }
