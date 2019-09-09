@@ -1,4 +1,4 @@
-use crate::db::{Conn, users_repository::UserCreationError};
+use crate::db::{Conn, auth_repository::UserCreationError};
 use crate::errors::{Errors, FieldValidator};
 use crate::services::auth_service::{login, register};
 
