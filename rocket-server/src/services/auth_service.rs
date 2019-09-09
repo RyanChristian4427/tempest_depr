@@ -1,5 +1,5 @@
 use crate::config;
-use crate::db::{Conn, users_repository::{self, UserCreationError}};
+use crate::db::{Conn, auth_repository::{self, UserCreationError}};
 use crate::models::user::User;
 
 use rocket::http::Status;
@@ -17,11 +17,11 @@ pub fn register(
     password: &str,
     conn: Conn,
 ) -> Result<User, UserCreationError> {
-    users_repository::register(&first_name, &last_name, &email, &password, conn)
+    auth_repository::register(&first_name, &last_name, &email, &password, conn)
 }
 
 pub fn login(email: &str, password: &str, conn: Conn) -> Option<User> {
-    users_repository::login(&email, &password, conn)
+    auth_repository::login(&email, &password, conn)
 }
 
 #[derive(Debug, Deserialize, Serialize)]
