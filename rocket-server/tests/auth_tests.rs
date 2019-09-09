@@ -2,9 +2,10 @@
 
 mod common;
 
-use common::*;
+use common::{test_client, response_json_value, register, FIRST_NAME, LAST_NAME, EMAIL, PASSWORD};
 use rocket::http::{ContentType, Status};
 use rocket::local::LocalResponse;
+
 
 #[test]
 /// Try registering a new user
@@ -22,7 +23,7 @@ fn test_register() {
     // As tests are ran in an independent order `login()` probably has already created smoketest user.
     // And so we gracefully handle "user already exists" error here.
     match status {
-        Status::Ok => check_user_response(response),
+        Status::Ok => check_auth_response(response),
         Status::UnprocessableEntity => check_user_validation_errors(response),
         _ => panic!("Got status: {}", status),
     }
@@ -75,7 +76,7 @@ fn test_login() {
         .body(json_string!({"user": {"email": EMAIL, "password": PASSWORD}}))
         .dispatch();
 
-    check_user_response(response)
+    check_auth_response(response)
 }
 
 #[test]
@@ -106,7 +107,7 @@ fn test_incorrect_login() {
 // Utility
 
 /// Assert that body contains "user" response with expected fields.
-fn check_user_response(response: &mut LocalResponse) {
+fn check_auth_response(response: &mut LocalResponse) {
     let value = response_json_value(response);
     let user = value.get("user").expect("must have a 'user' field");
 
