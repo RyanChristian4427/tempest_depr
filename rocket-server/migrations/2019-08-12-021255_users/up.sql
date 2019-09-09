@@ -14,4 +14,5 @@ CREATE TABLE users
 ALTER SEQUENCE users_id_seq RESTART WITH 1;
 
 INSERT INTO users (first_name, last_name, email, hashed_password)
-VALUES ('smoke', 'test', 'smoketest@example.com', '$rscrypt$0$DggB$AFR6Zk+AY16xtD9KAor9tw==$k7V3U+gadVDLCWwS41qwd09pt0x/WFDtidUj/S8MhJ4=$');
+VALUES ('smoke', 'test', 'smoketest@example.com', '$rscrypt$0$DggB$AFR6Zk+AY16xtD9KAor9tw==$k7V3U+gadVDLCWwS41qwd09pt0x/WFDtidUj/S8MhJ4=$'),
+       ('Ryan', 'Christian', 'ryan@gmail.com', '$rscrypt$0$DggB$iUvGfaP2WeGU3qeWNC0lMQ==$y0VkaVOtEz7ABr7/k/tGj24+N3E4EN4txZ2v57ArfM0=$');
