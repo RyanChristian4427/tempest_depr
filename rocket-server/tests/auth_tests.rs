@@ -2,7 +2,7 @@
 
 mod common;
 
-use common::{register, response_json_value, test_client, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD};
+use common::{register, response_json_value, test_client, token_header, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD};
 use rocket::http::{ContentType, Status};
 use rocket::local::LocalResponse;
 
@@ -114,6 +114,20 @@ fn check_auth_response(response: &mut LocalResponse) {
     assert_eq!(user.get("first_name").expect("must have a 'first_name' field"), FIRST_NAME);
     assert_eq!(user.get("last_name").expect("must have a 'last_name' field"), LAST_NAME);
     assert!(user.get("token").is_some());
+
+    let client = test_client();
+    let json_token = user.get("token")
+        .expect("must have a 'token' field")
+        .as_str()
+        .unwrap()
+        .to_string();
+
+    let response = response_json_value(&mut client
+        .get("/api/v1/user/options")
+        .header(token_header(json_token))
+        .dispatch());
+    let options = response.get("user_options").expect("must have a 'user_options' field");
+    assert!(options.get("emails_per_page").is_some());
 }
 
 /// Catches the registration test, if the email has already been used in the database
@@ -128,5 +142,5 @@ fn check_user_validation_errors(response: &mut LocalResponse) {
         .expect("must have non-empty 'email' errors")
         .as_str();
 
-    assert_eq!(email_error, Some("has already been taken"))
+    assert_eq!(Some("has already been taken"), email_error)
 }
