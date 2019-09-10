@@ -1,6 +1,6 @@
 use crate::db::Conn;
 use crate::models::user::User;
-use crate::schema::users;
+use crate::schema::{users, user_options};
 
 use crypto::scrypt::{scrypt_check, scrypt_simple, ScryptParams};
 use diesel::prelude::*;
@@ -15,6 +15,13 @@ pub struct NewUser<'a> {
     pub hashed_password: &'a str,
 }
 
+#[derive(Insertable)]
+#[table_name = "user_options"]
+pub struct NewUserOptions<'a> {
+    pub user_id: &'a i32,
+    pub emails_per_page: &'a i32,
+}
+
 pub enum UserCreationError {
     DuplicatedEmail,
 }
@@ -22,8 +29,9 @@ pub enum UserCreationError {
 impl From<Error> for UserCreationError {
     fn from(err: Error) -> UserCreationError {
         if let Error::DatabaseError(DatabaseErrorKind::UniqueViolation, info) = &err {
-            if let Some("unique_email") = info.constraint_name() {
-                return UserCreationError::DuplicatedEmail;
+            match info.constraint_name() {
+                Some("unique_email") => return UserCreationError::DuplicatedEmail,
+                _ => {}
             }
         }
         panic!("Error creating user: {:?}", err)
@@ -47,10 +55,25 @@ pub fn register(
         hashed_password,
     };
 
-    diesel::insert_into(users::table)
-        .values(new_user)
-        .get_result::<User>(&*conn)
-        .map_err(Into::into)
+    conn.transaction(|| {
+        let inserted_user = diesel::insert_into(users::table)
+            .values(new_user)
+            .get_result::<User>(&*conn)?;
+
+        let new_user_options = &NewUserOptions {
+            user_id: &inserted_user.id,
+            emails_per_page: &50,
+        };
+
+        diesel::insert_into(user_options::table)
+            .values(new_user_options)
+            .execute(&*conn)?;
+
+        users::table
+            .filter(users::id.eq(inserted_user.id))
+            .get_result::<User>(&*conn)
+            .map_err(Into::into)
+    })
 }
 
 pub fn login(email: &str, password: &str, conn: Conn) -> Option<User> {
