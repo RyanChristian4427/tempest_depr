@@ -2,10 +2,9 @@
 
 mod common;
 
-use common::{test_client, response_json_value, register, FIRST_NAME, LAST_NAME, EMAIL, PASSWORD};
+use common::{register, response_json_value, test_client, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD};
 use rocket::http::{ContentType, Status};
 use rocket::local::LocalResponse;
-
 
 #[test]
 /// Try registering a new user
@@ -112,14 +111,8 @@ fn check_auth_response(response: &mut LocalResponse) {
     let user = value.get("user").expect("must have a 'user' field");
 
     assert_eq!(user.get("email").expect("must have a 'email' field"), EMAIL);
-    assert_eq!(
-        user.get("first_name").expect("must have a 'first_name' field"),
-        FIRST_NAME
-    );
-    assert_eq!(
-        user.get("last_name").expect("must have a 'last_name' field"),
-        LAST_NAME
-    );
+    assert_eq!(user.get("first_name").expect("must have a 'first_name' field"), FIRST_NAME);
+    assert_eq!(user.get("last_name").expect("must have a 'last_name' field"), LAST_NAME);
     assert!(user.get("token").is_some());
 }
 
