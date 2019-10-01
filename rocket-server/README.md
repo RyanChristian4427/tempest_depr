@@ -2,7 +2,7 @@
 
 This is the server for what will eventually become Tempest, a web-based email client.
 
-This server is written in Rocket, a simple, fast, and type-safe web framework for Rust. The Database used is PosgreSQL, with Disel, a safe, extensible ORM and query builder for Rust, acting as the connection between the two. Diesel not only provides interaction with the Database, but migration support as well.
+This server is written in [Rocket](https://rocket.rs), a simple, fast, and type-safe web framework for Rust. The Database used is PosgreSQL, with [Diesel](http://diesel.rs), a safe, extensible ORM and query builder for Rust, acting as the connection between the two, as well as providing all migration support.
 
 This Rocket Server will be updated in conjunction with the Vue Client.
 
@@ -22,7 +22,7 @@ Diesel-cli - necessary only if Docker is not used
 
 ### Running
 
-To get the server running locally, I have provided a Docker Compose file. From project root, run:
+To get the server running locally, I have provided a Docker Compose file for the database and the CLI tool used to manage said database. From project root, run:
 
 ```
 docker-compose up --build -d
