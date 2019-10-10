@@ -56,3 +56,51 @@ fn test_invalid_get_user_options() {
 
     assert_eq!(inbox_error, Some("don't exist"));
 }
+
+#[test]
+/// Try retrieving an inbox for an existing user
+fn test_get_user_inbox() {
+    let client = test_client();
+    let token = login(&client);
+    let response = &mut client
+        .get("/api/v1/user/inbox")
+        .header(token_header(token))
+        .dispatch();
+
+    assert_eq!(response.status(), Status::Ok);
+
+    let value = response_json_value(response);
+    let inbox_size = value
+        .get("inbox")
+        .and_then(|inbox| inbox.as_array())
+        .map(|inbox| inbox.len())
+        .expect("must have 'inbox' field");
+    let expected_inbox_size = 2;
+
+    assert_eq!(inbox_size, expected_inbox_size);
+}
+
+#[test]
+/// Try retrieving an inbox for a non-existent user
+fn test_invalid_get_user_inbox() {
+    let client = test_client();
+    let response = &mut client
+        .get("/api/v1/user/inbox")
+        .header(token_header(get_valid_token_of_invalid_user()))
+        .dispatch();
+
+    assert_eq!(response.status(), Status::UnprocessableEntity);
+
+    let value = response_json_value(response);
+
+    let inbox_error = value
+        .get("errors")
+        .expect("must have a 'errors' field")
+        .get("inbox for user")
+        .expect("must have 'inbox for user' errors")
+        .get(0)
+        .expect("must have non empty 'inbox for user' errors")
+        .as_str();
+
+    assert_eq!(inbox_error, Some("doesn't exist"));
+}
