@@ -39,6 +39,14 @@ pub fn login(client: &Client) -> Token {
     })
 }
 
+/// Valid token of user that does not yet exist
+pub fn get_valid_token_of_invalid_user() -> Token {
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNtb2tldGVzdDJAZ21haWwuY29tIiwiZXhwI\
+     joxNTc1OTA1MjQ2LCJpZCI6NTB9.PbjzU5NvKPxh_vbGADc-eTT23Aqov9Z-keQbxqIRr7E"
+        .parse()
+        .unwrap()
+}
+
 /// Make an authorization header.
 pub fn token_header(token: Token) -> Header<'static> {
     Header::new("authorization", format!("Bearer {}", token))
