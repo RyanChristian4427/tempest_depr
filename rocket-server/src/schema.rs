@@ -4,7 +4,7 @@ table! {
         mailbox_id -> Int4,
         sender -> Text,
         content -> Text,
-        datetime -> Date,
+        datetime -> Timestamptz,
     }
 }
 
@@ -28,8 +28,4 @@ table! {
 joinable!(mailbox_messages -> users (mailbox_id));
 joinable!(user_options -> users (user_id));
 
-allow_tables_to_appear_in_same_query!(
-    mailbox_messages,
-    user_options,
-    users,
-);
+allow_tables_to_appear_in_same_query!(mailbox_messages, user_options, users,);

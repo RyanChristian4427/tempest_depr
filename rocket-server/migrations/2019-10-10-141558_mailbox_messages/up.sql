@@ -4,7 +4,7 @@ CREATE TABLE mailbox_messages
     mailbox_id           INTEGER NOT NULL,
     sender               TEXT NOT NULL,
     content              TEXT NOT NULL,
-    datetime             DATE NOT NULL,
+    datetime             TIMESTAMPTZ NOT NULL,
     FOREIGN KEY (mailbox_id) REFERENCES users (id)
 );
 
