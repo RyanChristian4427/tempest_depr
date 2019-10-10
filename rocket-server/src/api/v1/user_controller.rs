@@ -18,5 +18,5 @@ pub fn get_user_inbox(auth: Option<Auth>, conn: Conn) -> Result<JsonValue, Error
     let user_id = auth.map(|auth| auth.id).unwrap_or(-1);
     user_service::get_inbox(user_id, conn)
         .map(|emails| json!({ "inbox": emails }))
-        .ok_or_else(|| Errors::new(&[("inbox for that user", "doesn't exist")]))
+        .ok_or_else(|| Errors::new(&[("inbox for user", "doesn't exist")]))
 }
