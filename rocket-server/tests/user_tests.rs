@@ -21,8 +21,15 @@ fn test_get_user_options() {
 /// Assert that body contains "user" response with expected fields.
 fn check_user_options_response(response: &mut LocalResponse) {
     let value = response_json_value(response);
-    let options = value.get("user_options").expect("must have a 'user_options' field");
+    let options = value
+        .get("user_options")
+        .expect("must have a 'user_options' field");
     let expected_result: i32 = 50;
 
-    assert_eq!(options.get("emails_per_page").expect("must have a 'emails_per_page' field"), expected_result);
+    assert_eq!(
+        options
+            .get("emails_per_page")
+            .expect("must have a 'emails_per_page' field"),
+        expected_result
+    );
 }

@@ -101,8 +101,9 @@ fn decode_token(token: &str) -> Option<Auth> {
 mod tests {
     use super::*;
 
-    const JWT_TOKEN: &'static str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ5YW5AZ21haWwuY29tIiwiZXhwIjoxNTczM\
-        Tg1ODQ1LCJpZCI6Mn0.IW8XrGMiPh0ZKTs8vICMgANP0-HuRbzd0JnW8H0y-Bg";
+    const JWT_TOKEN: &'static str =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ5YW5AZ21haWwuY29tIiwiZXhwIjoxNTczM\
+         Tg1ODQ1LCJpZCI6Mn0.IW8XrGMiPh0ZKTs8vICMgANP0-HuRbzd0JnW8H0y-Bg";
 
     #[test]
     fn test_extract_token() {
@@ -132,8 +133,9 @@ mod tests {
 
     #[test]
     fn test_decode_token_bad_signature() {
-        const JWT_TOKEN_BAD_SIGNATURE: &'static str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ5YW5AZ21haWwuY29tIiw\
-            iZXhwIjoxNTczMTg1ODQ1LCJpZCI6Mn0.704WFHE8VY0_WLDfKRfYrKvXWARcgGEIieolR7TkAYU";
+        const JWT_TOKEN_BAD_SIGNATURE: &'static str =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ5YW5AZ21haWwuY29tIiw\
+             iZXhwIjoxNTczMTg1ODQ1LCJpZCI6Mn0.704WFHE8VY0_WLDfKRfYrKvXWARcgGEIieolR7TkAYU";
 
         let auth: Option<Auth> = decode_token(JWT_TOKEN_BAD_SIGNATURE);
         assert!(auth.is_none());
