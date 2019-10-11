@@ -8,5 +8,6 @@ pub fn routes() -> Vec<Route> {
         auth_controller::users_login,
         auth_controller::users_register,
         user_controller::get_user_options,
+        user_controller::get_user_inbox,
     ]
 }
