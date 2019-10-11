@@ -45,8 +45,8 @@
             password: '',
         };
 
-        @Getter('errors') public errors!: string;
-        @Getter('status') private status!: string;
+        @Getter public errors!: string;
+        @Getter private status!: string;
         @Action(AUTH_REQUEST) private AUTH_REQUEST: any;
         @Action(AUTH_LOGOUT) private AUTH_LOGOUT: any;
         @Action(AUTH_ERROR) private AUTH_ERROR: any;

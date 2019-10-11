@@ -70,6 +70,7 @@ const actions = {
     },
     [AUTH_REGISTER]({ commit }: any, credentials: RegisterUser) {
         return new Promise((resolve, reject) => {
+            commit(AUTH_REQUEST);
             ApiService.post('users/register', credentials)
                 .then(({ data }) => {
                     commit(AUTH_SUCCESS, data.user);
@@ -77,8 +78,13 @@ const actions = {
                     resolve(data);
                 })
                 .catch(({ response }) => {
-                    commit(AUTH_ERROR, response.data.errors);
-                    reject(response);
+                    if (response !== undefined) {
+                        commit(AUTH_ERROR, response.data.errors);
+                        reject(response.data.errors);
+                    } else {
+                        commit(AUTH_ERROR, 'Unknown Error');
+                        reject('Unknown Error');
+                    }
                 });
         });
     },
