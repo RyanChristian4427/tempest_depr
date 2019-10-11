@@ -7,10 +7,6 @@ Tempest will eventually be a webmail client that will not be unlike other webmai
 
 Instructions for running both the API server and the client can be found in the READMEs in the respective sub-directories.
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
 ## Built With
 
 * [Vue](https://vuejs.org/) - The client framework used
