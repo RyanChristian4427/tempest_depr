@@ -2,7 +2,10 @@
 
 mod common;
 
-use common::*;
+use common::{
+    register, response_json_value, test_client, token_header, EMAIL, FIRST_NAME, LAST_NAME,
+    PASSWORD,
+};
 use rocket::http::{ContentType, Status};
 use rocket::local::LocalResponse;
 
@@ -22,7 +25,7 @@ fn test_register() {
     // As tests are ran in an independent order `login()` probably has already created smoketest user.
     // And so we gracefully handle "user already exists" error here.
     match status {
-        Status::Ok => check_user_response(response),
+        Status::Ok => check_auth_response(response),
         Status::UnprocessableEntity => check_user_validation_errors(response),
         _ => panic!("Got status: {}", status),
     }
@@ -75,7 +78,7 @@ fn test_login() {
         .body(json_string!({"user": {"email": EMAIL, "password": PASSWORD}}))
         .dispatch();
 
-    check_user_response(response)
+    check_auth_response(response)
 }
 
 #[test]
@@ -106,20 +109,41 @@ fn test_incorrect_login() {
 // Utility
 
 /// Assert that body contains "user" response with expected fields.
-fn check_user_response(response: &mut LocalResponse) {
+fn check_auth_response(response: &mut LocalResponse) {
     let value = response_json_value(response);
     let user = value.get("user").expect("must have a 'user' field");
 
     assert_eq!(user.get("email").expect("must have a 'email' field"), EMAIL);
     assert_eq!(
-        user.get("first_name").expect("must have a 'first_name' field"),
+        user.get("first_name")
+            .expect("must have a 'first_name' field"),
         FIRST_NAME
     );
     assert_eq!(
-        user.get("last_name").expect("must have a 'last_name' field"),
+        user.get("last_name")
+            .expect("must have a 'last_name' field"),
         LAST_NAME
     );
     assert!(user.get("token").is_some());
+
+    let client = test_client();
+    let json_token = user
+        .get("token")
+        .expect("must have a 'token' field")
+        .as_str()
+        .unwrap()
+        .to_string();
+
+    let response = response_json_value(
+        &mut client
+            .get("/api/v1/user/options")
+            .header(token_header(json_token))
+            .dispatch(),
+    );
+    let options = response
+        .get("user_options")
+        .expect("must have a 'user_options' field");
+    assert!(options.get("emails_per_page").is_some());
 }
 
 /// Catches the registration test, if the email has already been used in the database
@@ -134,5 +158,5 @@ fn check_user_validation_errors(response: &mut LocalResponse) {
         .expect("must have non-empty 'email' errors")
         .as_str();
 
-    assert_eq!(email_error, Some("has already been taken"))
+    assert_eq!(Some("has already been taken"), email_error)
 }

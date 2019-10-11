@@ -10,8 +10,3 @@ services:
       POSTGRES_DB: "tempest"
     ports:
      - "5432:5432"
-     
-  diesel-cli:
-    image: ryanchristian4427/diesel-cli:latest
-    depends_on:
-     - postgres

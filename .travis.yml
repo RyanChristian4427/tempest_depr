@@ -1,12 +1,12 @@
 language: rust
 rust: nightly
-cache: cargo
 dist: xenial
+sudo: false
 
 services:
   - docker
-    
-before_script:
+
+install:
   - cd rocket-server
   - docker-compose up --build -d
   - docker run --rm -v "$PWD:/volume" -w /volume --network="rocket-server_default" -it ryanchristian4427/diesel-cli migration run
@@ -15,7 +15,7 @@ before_script:
 jobs:
   include:
     - stage: "Rust"
-      name: "Cargo Build"
-      script: "cargo build"
+      name: "Cargo Check"
+      script: "cargo check"
     - name: "Cargo Test"
       script: "cargo test"
