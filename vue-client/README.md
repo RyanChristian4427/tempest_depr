@@ -36,31 +36,6 @@ npm run serve
 npm run build
 ```
 
-## Testing
-### Test Methodology
-
-Testing has yet to be implemented
-
-
-### Running the tests
-
-All tests are located in ~/tests, and can be ran using the following commands from the client root:
-
-### Run all tests
-```
-npm run test
-```
-
-### Run end-to-end tests
-```
-npm run test:e2e
-```
-
-### Run unit tests
-```
-npm run test:unit
-```
-
 ## Code Style
 
 All Typescript is formatted to the linting rules found in ~/tslint. The linting rules are quite standard, with the exception of variable shadowing, which I have disabled as I disagree with the practice of not allowing it.
