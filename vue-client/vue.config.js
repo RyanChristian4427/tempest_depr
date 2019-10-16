@@ -12,7 +12,6 @@ module.exports = {
                 secure: false
             }
         }
-
     },
     css: {
         loaderOptions: {
