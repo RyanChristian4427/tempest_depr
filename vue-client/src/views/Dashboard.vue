@@ -13,7 +13,8 @@
                     :order="buttonAlignment"
                     :simple="isSimple"
                     :rounded="isRounded"
-                    :per-page="emailsPerPage">
+                    :per-page="emailsPerPage"
+                    @change="value => scrollToTop(value)">
             </b-pagination>
         </div>
     </section>
@@ -52,6 +53,12 @@
             return data.slice(pageNumber * this.emailsPerPage, (pageNumber + 1) * this.emailsPerPage);
         }
 
+        public scrollToTop(value: number) {
+            if (value > this.currentPage) {
+                document.getElementsByClassName('container')[0].scrollTop = 0;
+            }
+        }
+
         // noinspection JSMethodCanBeStatic
         private created() {
             data.sort((a: Email, b: Email) => -a.datetime.localeCompare(b.datetime));
@@ -61,6 +68,11 @@
 
 <style scoped lang="scss">
     .container {
-        margin: 10vh 5vw 5vh;
+        margin: 8vh 5vw 2vh;
+        height: 78vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-color: slategrey $theme-isabelline;
+        scrollbar-width: thin;
     }
 </style>
