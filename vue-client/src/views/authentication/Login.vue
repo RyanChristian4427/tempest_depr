@@ -99,7 +99,7 @@
 
     #layered-background {
         border-radius: 20px;
-        background: $theme-ash-grey;
+        background: $theme-charleston-green;
         padding: 5vh 5vw 5vh;
     }
 
