@@ -53,7 +53,7 @@
     .email-card {
         border: 1px solid gray;
         margin-bottom: .5vh !important;
-        background: $theme-ash-grey;
+        background: $theme-charleston-green;
         cursor: pointer;
 
         .level-left {
