@@ -23,7 +23,7 @@
 <script lang="ts">
     import {Vue, Component} from 'vue-property-decorator';
     import { Getter } from 'vuex-class';
-    import EmailCard from '@/components/tempest/EmailCard.vue';
+    import EmailCard from '@/components/tempest/inbox/EmailCard.vue';
     import data from '../assets/data.json';
     import { Email } from '@/models/email.ts';
 
