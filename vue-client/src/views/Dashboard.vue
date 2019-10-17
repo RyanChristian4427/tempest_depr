@@ -55,7 +55,7 @@
 
         public scrollToTop(value: number) {
             if (value > this.currentPage) {
-                document.getElementsByClassName('container')[0].scrollTop = 0;
+                document.getElementsByClassName('container')[0].scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
