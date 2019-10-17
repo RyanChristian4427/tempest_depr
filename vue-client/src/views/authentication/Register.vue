@@ -77,7 +77,7 @@
             const { user } = this;
             if (user.first_name && user.last_name && user.email && user.password) {
                 await this.AUTH_REGISTER({user})
-                    .then(() => this.$router.push({ name: 'Dashboard' }));
+                    .then(() => this.$router.push({ name: 'Inbox' }));
             } else {
                 this.AUTH_ERROR('Please provide your new account credentials before submitting');
             }
