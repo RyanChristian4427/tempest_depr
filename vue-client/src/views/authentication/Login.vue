@@ -70,7 +70,7 @@
             if (user.email && user.password) {
                 await this.AUTH_REQUEST({user})
                     .then(async () => await this.USER_OPTIONS_REQUEST())
-                    .then(() => this.$router.push({ name: 'Dashboard' }));
+                    .then(() => this.$router.push({ name: 'Inbox' }));
             } else {
                 this.AUTH_ERROR('Please provide your account credentials before submitting');
             }
