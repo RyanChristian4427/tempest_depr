@@ -25,12 +25,7 @@
     import { Getter } from 'vuex-class';
     import EmailCard from '@/components/tempest/EmailCard.vue';
     import data from '../assets/data.json';
-
-    interface Email {
-        sender: string;
-        content: string;
-        datetime: string;
-    }
+    import { Email } from '@/models/email.ts';
 
     @Component({
         components: {
