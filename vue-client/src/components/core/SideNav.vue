@@ -4,12 +4,24 @@
         <hr>
 
         <h3 class="title">Test</h3>
+        <nav-card v-bind:nav-tile="x"></nav-card>
     </div>
 </template>
 
-<script>
-    export default {
-        name: 'SideNav',
+<script lang="ts">
+    import {Vue, Component} from 'vue-property-decorator';
+    import NavCard from '@/components/tempest/side-nav/NavCard.vue';
+    import {SideNavTile} from "@/models/SideNav";
+
+    @Component({
+        components: {
+            NavCard,
+        },
+    })
+    export default class SideNav extends Vue {
+        public x: SideNavTile = {
+            title: 'TestTile',
+        }
     };
 </script>
 
