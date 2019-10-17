@@ -14,11 +14,18 @@
                     <b-field label="Password">
                         <b-input type="password" v-model="user.password" placeholder="Password"/>
                     </b-field>
-                    <b-field grouped position="is-right">
-                        <b-button @click="login" id="submit-button" type="is-xanadu is-rounded">
-                            <b>Submit</b>
-                        </b-button>
-                    </b-field>
+                    <div class="level">
+                        <div class="level-left">
+                            <b-button @click="navigateToRegister" class="level-item" id="register-nav-button" type="is-xanadu is-rounded">
+                                <b>Or Register Instead</b>
+                            </b-button>
+                        </div>
+                        <div class="level-right">
+                            <b-button @click="login" id="submit-button" type="is-xanadu is-rounded">
+                                <b>Submit</b>
+                            </b-button>
+                        </div>
+                    </div>
                     <div id="error-message" v-if="errors">{{ errors }}</div>
                     <b-loading :is-full-page="false" :active.sync="loadingStatus" :can-cancel="false"></b-loading>
                 </div>
@@ -67,6 +74,10 @@
             } else {
                 this.AUTH_ERROR('Please provide your account credentials before submitting');
             }
+        }
+
+        protected navigateToRegister() {
+            this.$router.push({ name: 'Register' });
         }
 
         protected logout() {
