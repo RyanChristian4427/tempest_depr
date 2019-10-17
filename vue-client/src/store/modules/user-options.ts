@@ -2,7 +2,7 @@ import {
     USER_OPTIONS_REQUEST,
     USER_OPTIONS_SUCCESS,
     OPTIONS_ERROR,
-} from '@/store/actions/user_options';
+} from '@/store/actions/user-options';
 
 import {
     UserOptionsState,
