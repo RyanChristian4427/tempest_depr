@@ -38,7 +38,7 @@
     import {Vue, Component} from 'vue-property-decorator';
     import { Action, Getter } from 'vuex-class';
     import {AUTH_REQUEST, AUTH_LOGOUT, AUTH_ERROR} from '@/store/actions/auth.ts';
-    import { USER_OPTIONS_REQUEST } from '@/store/actions/user_options';
+    import { USER_OPTIONS_REQUEST } from '@/store/actions/user-options';
 
     interface IUser {
         email: string;

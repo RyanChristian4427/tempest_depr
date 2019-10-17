@@ -1,5 +1,5 @@
-import MinimalLayout from '@/components/layouts/Minimal-Layout.vue';
-import DashboardLayout from '@/components/layouts/Dashboard-Layout.vue';
+import MinimalLayout from '@/components/layouts/MinimalLayout.vue';
+import DashboardLayout from '@/components/layouts/DashboardLayout.vue';
 
 export default [
     {
