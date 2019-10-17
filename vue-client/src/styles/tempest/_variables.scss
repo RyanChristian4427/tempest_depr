@@ -13,4 +13,7 @@ $theme-ash-grey: #2E2C2F;
 
 $colors: (
         "xanadu": ($theme-xanadu, $theme-deep-space-sparkle),
+        "xanadu-light": ($theme-xanadu, $theme-isabelline),
+        "deep-space-sparkle": ($theme-deep-space-sparkle, $theme-xanadu),
+        "isabelline": ($theme-isabelline, $theme-xanadu)
 );
