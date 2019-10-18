@@ -2,38 +2,24 @@
     <div class="side-nav">
         <h2 class="title has-text-centered">Tempest</h2>
         <hr>
-
-        <nav-tile v-bind:nav-tile="tile1"></nav-tile>
-        <nav-tile v-bind:nav-tile="tile2"></nav-tile>
-        <nav-tile v-bind:nav-tile="tile3"></nav-tile>
-        <nav-tile v-bind:nav-tile="tile4"></nav-tile>
+        <b-menu-list>
+            <b-menu-item label="Inbox" icon="inbox" :active="true"></b-menu-item>
+            <b-menu-item label="Important" icon="exclamation"></b-menu-item>
+            <b-menu-item label="Financials" icon="chevron-right">
+                <b-menu-item label="Capital One"></b-menu-item>
+                <b-menu-item label="Bank of America"></b-menu-item>
+                <b-menu-item label="Chase"></b-menu-item>
+            </b-menu-item>
+            <b-menu-item label="Trash" icon="delete"></b-menu-item>
+        </b-menu-list>
     </div>
 </template>
 
 <script lang="ts">
     import {Vue, Component} from 'vue-property-decorator';
-    import NavTile from '@/components/tempest/side-nav/NavTile.vue';
-    import {SideNavTile} from '@/models/SideNav';
 
-    @Component({
-        components: {
-            NavTile,
-        },
-    })
-    export default class SideNav extends Vue {
-        public tile1: SideNavTile = {
-            title: 'Inbox',
-        };
-        public tile2: SideNavTile = {
-            title: 'Important',
-        };
-        public tile3: SideNavTile = {
-            title: 'Banks',
-        };
-        public tile4: SideNavTile = {
-            title: 'Trash',
-        };
-    }
+    @Component
+    export default class SideNav extends Vue {}
 </script>
 
 <style scoped lang="scss">
@@ -47,12 +33,16 @@
             color: $theme-isabelline;
         }
 
-        h3 {
-            padding-left: 1vw;
-        }
-
         hr {
             margin: 1.5rem .5vw 10rem;
+        }
+
+        .menu-list {
+            font-size: 1.5rem;
+
+            li {
+                margin: .5vh 1vw .5vh 0;
+            }
         }
     }
 </style>
