@@ -6,10 +6,10 @@
 
 <script lang="ts">
     import {Vue, Component, Prop} from 'vue-property-decorator';
-    import {SideNavTileDropdown} from "@/models/SideNav";
+    import {SideNavTileDropdown} from '@/models/SideNav';
 
     @Component
-    export default class NavCardDropdown extends Vue {
+    export default class NavTileDropdown extends Vue {
         @Prop()
         public navTileDropDown: SideNavTileDropdown | undefined;
     }
