@@ -1,6 +1,6 @@
 use crate::db::{auth_repository::UserCreationError, Conn};
 use crate::errors::{Errors, FieldValidator};
-use crate::services::auth_service::{login, register};
+use crate::services::auth_service;
 
 use rocket_contrib::json::{Json, JsonValue};
 use serde::Deserialize;
@@ -33,7 +33,7 @@ pub fn users_register(new_user: Json<NewUser>, conn: Conn) -> Result<JsonValue, 
 
     extractor.check()?;
 
-    register(&first_name, &last_name, &email, &password, conn)
+    auth_service::register(&first_name, &last_name, &email, &password, conn)
         .map(|user| json!({ "user": user.to_user_auth() }))
         .map_err(|error| {
             let _field = match error {
@@ -63,7 +63,7 @@ pub fn users_login(user: Json<LoginUser>, conn: Conn) -> Result<JsonValue, Error
     let password = extractor.extract("password", user.password);
     extractor.check()?;
 
-    login(&email, &password, conn)
+    auth_service::login(&email, &password, conn)
         .map(|user| json!({ "user": user.to_user_auth() }))
         .ok_or_else(|| Errors::new(&[("email or password", "is invalid")]))
 }
