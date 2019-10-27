@@ -1,6 +1,6 @@
 use crate::services::auth_service::Auth;
 
-use crate::config::token_expire_time;
+use crate::config;
 use serde::Serialize;
 
 #[derive(Queryable, Serialize)]
@@ -27,7 +27,7 @@ pub struct UserAuth<'a> {
 
 impl User {
     pub fn to_user_auth(&self) -> UserAuth {
-        let exp = token_expire_time();
+        let exp = config::token_expire_time();
         let token = Auth {
             id: self.id,
             email: self.email.clone(),

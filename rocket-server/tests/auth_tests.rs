@@ -3,16 +3,19 @@
 mod common;
 
 use common::{
-    register, response_json_value, test_client, token_header, EMAIL, FIRST_NAME, LAST_NAME,
-    PASSWORD,
+    FIRST_NAME,
+    LAST_NAME,
+    EMAIL,
+    PASSWORD
 };
+
 use rocket::http::{ContentType, Status};
 use rocket::local::LocalResponse;
 
 #[test]
 /// Try registering a new user
 fn test_register() {
-    let client = test_client();
+    let client = common::test_client();
     let response = &mut client
         .post("/api/v1/users/register")
         .header(ContentType::JSON)
@@ -34,8 +37,8 @@ fn test_register() {
 #[test]
 /// Registration with the same email must fail
 fn test_register_with_duplicated_email() {
-    let client = test_client();
-    register(
+    let client = common::test_client();
+    common::register(
         client,
         FIRST_NAME,
         LAST_NAME,
@@ -58,7 +61,7 @@ fn test_register_with_duplicated_email() {
 
     assert_eq!(response.status(), Status::UnprocessableEntity);
 
-    let value = response_json_value(response);
+    let value = common::response_json_value(response);
     let error = value
         .get("errors")
         .and_then(|errors| errors.get("email"))
@@ -71,7 +74,7 @@ fn test_register_with_duplicated_email() {
 #[test]
 /// Try logging in, and assure response token is valid
 fn test_login() {
-    let client = test_client();
+    let client = common::test_client();
     let response = &mut client
         .post("/api/v1/users/login")
         .header(ContentType::JSON)
@@ -84,7 +87,7 @@ fn test_login() {
 #[test]
 /// Login with wrong password must fail.
 fn test_incorrect_login() {
-    let client = test_client();
+    let client = common::test_client();
     let response = &mut client
         .post("/api/v1/users/login")
         .header(ContentType::JSON)
@@ -93,7 +96,7 @@ fn test_incorrect_login() {
 
     assert_eq!(response.status(), Status::UnprocessableEntity);
 
-    let value = response_json_value(response);
+    let value = common::response_json_value(response);
     let login_error = value
         .get("errors")
         .expect("must have a 'errors' field")
@@ -110,7 +113,7 @@ fn test_incorrect_login() {
 
 /// Assert that body contains "user" response with expected fields.
 fn check_auth_response(response: &mut LocalResponse) {
-    let value = response_json_value(response);
+    let value = common::response_json_value(response);
     let user = value.get("user").expect("must have a 'user' field");
 
     assert_eq!(user.get("email").expect("must have a 'email' field"), EMAIL);
@@ -126,7 +129,7 @@ fn check_auth_response(response: &mut LocalResponse) {
     );
     assert!(user.get("token").is_some());
 
-    let client = test_client();
+    let client = common::test_client();
     let json_token = user
         .get("token")
         .expect("must have a 'token' field")
@@ -134,10 +137,10 @@ fn check_auth_response(response: &mut LocalResponse) {
         .unwrap()
         .to_string();
 
-    let response = response_json_value(
+    let response = common::response_json_value(
         &mut client
             .get("/api/v1/user/options")
-            .header(token_header(json_token))
+            .header(common::token_header(json_token))
             .dispatch(),
     );
     let options = response
@@ -148,7 +151,7 @@ fn check_auth_response(response: &mut LocalResponse) {
 
 /// Catches the registration test, if the email has already been used in the database
 fn check_user_validation_errors(response: &mut LocalResponse) {
-    let value = response_json_value(response);
+    let value = common::response_json_value(response);
     let email_error = value
         .get("errors")
         .expect("must have a 'errors' field")
