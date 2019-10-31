@@ -4,7 +4,6 @@ import { router } from '@/router/router';
 import store from '@/store';
 import Vue from 'vue';
 
-import '@/services';
 import '@mdi/font/css/materialdesignicons.css';
 
 Vue.use(Buefy, {

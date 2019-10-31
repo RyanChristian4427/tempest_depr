@@ -9,7 +9,7 @@ import {
     OptionsSuccessResponse,
 } from '@/store/types/user-options';
 
-import ApiService from '@/services/api-service';
+import {apiService} from 'ts-api-toolkit';
 
 const state: UserOptionsState = {
     emailsPerPage: 50,
@@ -24,7 +24,7 @@ const getters = {
 const actions = {
     [USER_OPTIONS_REQUEST]({commit}: any) {
         return new Promise((resolve, reject) => {
-            ApiService.get('user/options')
+            apiService.get('user/options')
                 .then(({data}) => {
                     commit(USER_OPTIONS_SUCCESS, data.user_options);
                     resolve(data);
