@@ -2,7 +2,7 @@
 
 This is the front end client for what will eventually become Tempest, a web-based email client.
 
-The front end for this project is written in Vue, a wonderful and beautiful framework for developing applications. All state is managed using Vuex, non-component scripting is all written in TypeScript, and this project utilizes the Buefy SCSS framework, which is Bulma written for Vue.
+The front end for this project is written in Vue, a progressive framework for building user interfaces. All state is managed using Vuex, non-component scripting is all written in TypeScript, and this project utilizes the Buefy SCSS framework, which is Bulma written for Vue.
 
 This Vue Client will be updated in conjunction with the Rocket API server.
 
