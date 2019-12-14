@@ -13,7 +13,6 @@ frank_jwt = "3.1.1"
 serde = {version = "1.0", features = ["derive"]}
 serde_json = "1.0"
 rocket = { version = "0.4.2", features = ["tls"] }
-rocket_cors = { version = "0.4.0", default-features = false }
 rust-crypto = "0.2.36"
 validator = "0.8.0"
 validator_derive = "0.8.0"
