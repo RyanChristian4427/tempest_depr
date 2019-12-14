@@ -36,7 +36,9 @@ fn test_invalid_get_user_options() {
     let client = common::test_client();
     let response = &mut client
         .get("/api/v1/user/options")
-        .header(common::token_header(common::get_valid_token_of_invalid_user()))
+        .header(common::token_header(
+            common::get_valid_token_of_invalid_user(),
+        ))
         .dispatch();
 
     assert_eq!(response.status(), Status::UnprocessableEntity);
@@ -84,7 +86,9 @@ fn test_invalid_get_user_inbox() {
     let client = common::test_client();
     let response = &mut client
         .get("/api/v1/user/inbox")
-        .header(common::token_header(common::get_valid_token_of_invalid_user()))
+        .header(common::token_header(
+            common::get_valid_token_of_invalid_user(),
+        ))
         .dispatch();
 
     assert_eq!(response.status(), Status::UnprocessableEntity);

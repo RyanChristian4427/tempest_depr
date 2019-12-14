@@ -2,12 +2,7 @@
 
 mod common;
 
-use common::{
-    FIRST_NAME,
-    LAST_NAME,
-    EMAIL,
-    PASSWORD
-};
+use common::{EMAIL, FIRST_NAME, LAST_NAME, PASSWORD};
 
 use rocket::http::{ContentType, Status};
 use rocket::local::LocalResponse;
