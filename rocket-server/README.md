@@ -2,7 +2,7 @@
 
 This is the server for what will eventually become Tempest, a web-based email client.
 
-This server is written in [Rocket](https://rocket.rs), a simple, fast, and type-safe web framework for Rust. The Database used is PostgreSQL, with [Diesel](http://diesel.rs), a safe, extensible ORM and query builder for Rust, acting as the bridge between Rocket and the database. Diesel also provides all migration management for this project.
+This server is written in [Rocket](https://rocket.rs), a simple, fast, and type-safe web framework for Rust. The database used is [PostgreSQL](https://www.postgresql.org/), the world's most advanced open source relational database,, with [Diesel](http://diesel.rs), a safe, extensible ORM and query builder for Rust, acting as the bridge between Rocket and the database. Diesel also provides all migration management for this project.
 
 This Rocket Server will be updated in conjunction with the Vue Client.
 
@@ -13,7 +13,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 ```
-Rust 1.39 nightly
+Rust nightly
 Cargo
 Docker - optional
 Diesel-cli - necessary only if Docker is not used
@@ -36,6 +36,8 @@ docker run --rm \
     --network="rocket-server_default" \
     -it ryanchristian4427/diesel-cli migration run
 ```
+
+The network you use depends on the parent directory, so if the docker compose is indeed within 'rocket-server', the command above will work just fine. Change it if you change the directory name.
 
 The Docker image built for diesel-cli will run "Diesel" without any arguments, making the container act like a normal CLI. However, that very large command is necessary upon every use. I therefore recommend creating an alias "docker ... /diesel-cli" to "diesel-cli" in a .bashrc or .zshrc, so the tool can be just called with "diesel-cli [command]".
 
@@ -74,3 +76,13 @@ The linter Clippy is also used and often its suggestions are often used, but the
 ```
 cargo clippy
 ```
+
+## Built With
+
+* [Rocket](https://github.com/glium/glium) - A simple, fast, and type-safe web framework for Rust
+* [Diesel](https://github.com/tomaka/glium_text) - A safe, extensible ORM and query builder for Rust
+* [PostgreSQL](https://github.com/rustgd/cgmath) - The world's most advanced open source relational database
+
+## Authors
+
+* **Ryan Christian** - *Entire Project* - [RyanChristian4427](https://github.com/RyanChristian4427)

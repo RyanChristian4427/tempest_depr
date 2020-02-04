@@ -12,12 +12,13 @@ module.exports = {
                 secure: false
             }
         }
-
     },
     css: {
         loaderOptions: {
             sass: {
-                data: '@import "@/styles/_tempest.scss";'
+                data: `
+                    @import "@/styles/_tempest.scss";
+                `
             }
         }
     }

@@ -4,7 +4,6 @@
 extern crate rocket;
 #[macro_use]
 extern crate rocket_contrib;
-extern crate rocket_cors;
 #[macro_use]
 extern crate diesel;
 #[macro_use]
@@ -18,9 +17,8 @@ mod models;
 mod schema;
 mod services;
 
-use rocket::{http::Method, Rocket, Route};
+use rocket::{Rocket, Route};
 use rocket_contrib::json::JsonValue;
-use rocket_cors::{AllowedHeaders, AllowedOrigins};
 use validator;
 
 #[catch(404)]
@@ -40,29 +38,11 @@ fn rocket_instance(mounts: Vec<(&str, Vec<Route>)>) -> Rocket {
 
     instance
         .attach(db::Conn::fairing())
-        .attach(cors())
         .register(catchers![not_found])
 }
 
 fn mounts() -> Vec<(&'static str, Vec<Route>)> {
     vec![("/api/v1", api::v1::routes())]
-}
-
-fn cors() -> rocket_cors::Cors {
-    let (allowed_origins, _failed_origins) =
-        AllowedOrigins::some(&["https://localhost:8080", "https://192.168.0.*:8080"]);
-
-    // You can also deserialize this
-    rocket_cors::Cors {
-        allowed_origins,
-        allowed_methods: vec![Method::Get, Method::Post]
-            .into_iter()
-            .map(From::from)
-            .collect(),
-        allowed_headers: AllowedHeaders::some(&["Authorization", "Accept", "Content-Type"]),
-        allow_credentials: true,
-        ..Default::default()
-    }
 }
 
 pub fn rocket() -> rocket::Rocket {

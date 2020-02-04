@@ -14,8 +14,7 @@ import {
     RegisterUser,
 } from '@/store/types/auth';
 
-import ApiService from '@/services/api-service';
-import JwtService from '@/services/jwt-service';
+import {apiService, jwtService} from 'ts-api-toolkit';
 import User from '@/models/user';
 
 
@@ -23,7 +22,7 @@ const state: AuthState = {
     user: new User('', '', ''),
     status: '',
     errors: '',
-    authenticated: !!JwtService.getToken(),
+    authenticated: !!jwtService.getToken(),
 };
 
 const getters = {
@@ -45,10 +44,9 @@ const actions = {
     [AUTH_REQUEST]({ commit }: any, credentials: LoginUser) {
         return new Promise((resolve, reject) => {
             commit(AUTH_REQUEST);
-            ApiService.post('users/login', credentials)
+            apiService.post('users/login', credentials)
                 .then(({ data }) => {
                     commit(AUTH_SUCCESS, data.user);
-                    ApiService.setHeader();
                     resolve(data);
                 })
                 .catch(({ response }) => {
@@ -71,10 +69,9 @@ const actions = {
     [AUTH_REGISTER]({ commit }: any, credentials: RegisterUser) {
         return new Promise((resolve, reject) => {
             commit(AUTH_REQUEST);
-            ApiService.post('users/register', credentials)
+            apiService.post('users/register', credentials)
                 .then(({ data }) => {
                     commit(AUTH_SUCCESS, data.user);
-                    ApiService.setHeader();
                     resolve(data);
                 })
                 .catch(({ response }) => {
@@ -102,7 +99,7 @@ const mutations = {
         state.status = 'Logged in';
         state.user = new User(user.first_name + ' ' + user.last_name, user.email, user.token);
         state.authenticated = true;
-        JwtService.saveToken(user.token);
+        jwtService.saveToken(user.token);
     },
     [AUTH_ERROR]: (state: AuthState, error: string) => {
         state.status = '';
@@ -113,7 +110,7 @@ const mutations = {
         state.status = '';
         state.errors = '';
         state.authenticated = false;
-        JwtService.destroyToken();
+        jwtService.destroyToken();
     },
 };
 

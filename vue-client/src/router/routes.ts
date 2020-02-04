@@ -1,5 +1,5 @@
-import MinimalLayout from '@/components/layouts/Minimal-Layout.vue';
-import DashboardLayout from '@/components/layouts/Dashboard-Layout.vue';
+import MinimalLayout from '@/components/layouts/MinimalLayout.vue';
+import InboxLayout from '@/components/layouts/InboxLayout.vue';
 
 export default [
     {
@@ -20,12 +20,12 @@ export default [
     },
     {
         path: '/',
-        component: DashboardLayout,
+        component: InboxLayout,
         children: [
             {
-                path: '/dashboard',
-                name: 'Dashboard',
-                component: () => import('@/views/Dashboard.vue'),
+                path: '/inbox',
+                name: 'Inbox',
+                component: () => import('@/views/Inbox.vue'),
             },
         ],
     },
