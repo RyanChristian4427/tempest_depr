@@ -103,8 +103,7 @@ mod tests {
     use super::*;
 
     const JWT_TOKEN: &'static str =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ5YW5AZ21haWwuY29tIiwiZXhwIjoxNTczM\
-         Tg1ODQ1LCJpZCI6Mn0.IW8XrGMiPh0ZKTs8vICMgANP0-HuRbzd0JnW8H0y-Bg";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ5YW5AZ21haWwuY29tIiwiZXhwIjoxNTg2MDI3NTE0LCJpZCI6Mn0.pjzXDZrjt7lcn-D2uCvykf6EKhd8mAiFJKQZ2_oZ2Gk";
 
     #[test]
     fn test_extract_token() {
