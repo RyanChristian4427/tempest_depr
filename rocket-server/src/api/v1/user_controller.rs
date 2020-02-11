@@ -1,10 +1,8 @@
-use crate::config::AppState;
 use crate::db::Conn;
 use crate::errors::Errors;
 use crate::services::auth_service::Auth;
 use crate::services::user_service;
 
-use rocket::State;
 use rocket_contrib::json::JsonValue;
 
 #[get("/user/options")]
