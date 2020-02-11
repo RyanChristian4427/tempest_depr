@@ -4,6 +4,8 @@ use rocket::fairing::AdHoc;
 use std::collections::HashMap;
 use std::env;
 
+pub const DATE_FORMAT: &str = "%Y-%m-%dT%H:%M:%S%.3fZ";
+
 /// Debug only secret for JWT encoding & decoding.
 #[cfg(debug_assertions)]
 pub const SECRET: &str = "XK6EH:M<G~k8l[iYw/1=0*RznX*P$7WU";
