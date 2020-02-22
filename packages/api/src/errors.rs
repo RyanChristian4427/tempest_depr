@@ -41,7 +41,7 @@ impl<'r> Responder<'r> for Errors {
             Status::UnprocessableEntity,
             Json(json!({ "errors": errors })),
         )
-            .respond_to(req)
+        .respond_to(req)
     }
 }
 
@@ -76,8 +76,8 @@ impl FieldValidator {
     }
 
     pub fn extract<T>(&mut self, field_name: &'static str, field: Option<T>) -> T
-        where
-            T: Default,
+    where
+        T: Default,
     {
         field.unwrap_or_else(|| {
             self.errors
