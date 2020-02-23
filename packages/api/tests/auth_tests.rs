@@ -67,46 +67,8 @@ fn test_register_with_duplicated_email() {
 }
 
 #[test]
-/// Try logging in, and assure response token is valid
-fn test_login() {
-    let client = common::test_client();
-    let response = &mut client
-        .post("/api/v1/users/login")
-        .header(ContentType::JSON)
-        .body(json_string!({"user": {"email": EMAIL, "password": PASSWORD}}))
-        .dispatch();
-
-    check_auth_response(response)
-}
-
-#[test]
-/// Login with wrong password must fail.
-fn test_incorrect_login() {
-    let client = common::test_client();
-    let response = &mut client
-        .post("/api/v1/users/login")
-        .header(ContentType::JSON)
-        .body(json_string!({"user": {"email": EMAIL, "password": "foo"}}))
-        .dispatch();
-
-    assert_eq!(response.status(), Status::UnprocessableEntity);
-
-    let value = common::response_json_value(response);
-    let login_error = value
-        .get("errors")
-        .expect("must have a 'errors' field")
-        .get("email or password")
-        .expect("must have 'email or password' errors")
-        .get(0)
-        .expect("must have non empty 'email or password' errors")
-        .as_str();
-
-    assert_eq!(login_error, Some("is invalid"));
-}
-
-#[test]
-/// Registration with an invalid email must fail
-fn test_register_with_invalid_email() {
+/// Registration with an invalid email format must fail
+fn test_register_with_invalid_email_format() {
     let client = common::test_client();
     let response = &mut client
         .post("/api/v1/users/register")
@@ -127,13 +89,96 @@ fn test_register_with_invalid_email() {
 }
 
 #[test]
-/// Registration with an invalid password must fail
-fn test_register_with_invalid_password() {
+/// Registration with an invalid password format must fail
+fn test_register_with_invalid_password_format() {
     let client = common::test_client();
     let response = &mut client
         .post("/api/v1/users/register")
         .header(ContentType::JSON)
         .body(json_string!({"user": {"first_name": FIRST_NAME, "last_name": LAST_NAME, "email": EMAIL, "password": "pw"}}))
+        .dispatch();
+
+    assert_eq!(response.status(), Status::UnprocessableEntity);
+
+    let value = common::response_json_value(response);
+    let error = value
+        .get("errors")
+        .and_then(|errors| errors.get("password"))
+        .and_then(|errors| errors.get(0))
+        .and_then(|error| error.as_str());
+
+    assert_eq!(error, Some("length"))
+}
+
+
+#[test]
+/// Try logging in, and assure response token is valid
+fn test_login() {
+    let client = common::test_client();
+    let response = &mut client
+        .post("/api/v1/users/login")
+        .header(ContentType::JSON)
+        .body(json_string!({"user": {"email": EMAIL, "password": PASSWORD}}))
+        .dispatch();
+
+    check_auth_response(response)
+}
+
+#[test]
+/// Login with wrong password must fail.
+fn test_incorrect_login() {
+    let client = common::test_client();
+    let response = &mut client
+        .post("/api/v1/users/login")
+        .header(ContentType::JSON)
+        .body(json_string!({"user": {"email": EMAIL, "password": "foobarfoobar"}}))
+        .dispatch();
+
+    assert_eq!(response.status(), Status::UnprocessableEntity);
+
+    let value = common::response_json_value(response);
+    let login_error = value
+        .get("errors")
+        .expect("must have a 'errors' field")
+        .get("email or password")
+        .expect("must have 'email or password' errors")
+        .get(0)
+        .expect("must have non empty 'email or password' errors")
+        .as_str();
+
+    assert_eq!(login_error, Some("is invalid"));
+}
+
+#[test]
+/// Login with an invalid email format must fail
+fn test_login_with_invalid_email_format() {
+    let client = common::test_client();
+    let response = &mut client
+        .post("/api/v1/users/login")
+        .header(ContentType::JSON)
+        .body(json_string!({"user": {"email": "smoketest", "password": PASSWORD}}))
+        .dispatch();
+
+    assert_eq!(response.status(), Status::UnprocessableEntity);
+
+    let value = common::response_json_value(response);
+    let error = value
+        .get("errors")
+        .and_then(|errors| errors.get("email"))
+        .and_then(|errors| errors.get(0))
+        .and_then(|error| error.as_str());
+
+    assert_eq!(error, Some("email"))
+}
+
+#[test]
+/// Login with an invalid password format must fail
+fn test_login_with_invalid_password_format() {
+    let client = common::test_client();
+    let response = &mut client
+        .post("/api/v1/users/login")
+        .header(ContentType::JSON)
+        .body(json_string!({"user": {"email": EMAIL, "password": "pw"}}))
         .dispatch();
 
     assert_eq!(response.status(), Status::UnprocessableEntity);
