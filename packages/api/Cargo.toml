@@ -3,7 +3,7 @@ name = "tempest"
 version = "0.1.0"
 authors = ["Ryan Christian <ryanchristian4427@gmail.com>"]
 homepage = "https://github.com/RyanChristian4427/tempest"
-description = "A RESTful API for the tempest email client"
+description = "A RESTful API for the Tempest email client"
 edition = "2018"
 
 [dependencies]
