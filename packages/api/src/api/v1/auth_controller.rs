@@ -1,7 +1,7 @@
 use crate::config::AppState;
 use crate::db::{auth_repository::UserCreationError, Conn};
 use crate::errors::{Errors, FieldValidator};
-use crate::models::user::InsertableUser;
+use crate::models::user::{InsertableUser, UserCredentials};
 use crate::services::auth_service;
 
 use rocket::State;
@@ -55,7 +55,6 @@ pub fn users_register(
             };
             Errors::new(&[(_field, "has already been taken")])
         })
-
 }
 
 #[derive(Deserialize)]
@@ -84,7 +83,9 @@ pub fn users_login(
     let password = extractor.extract("password", user.password);
     extractor.check()?;
 
-    auth_service::login(&email, &password, conn)
+    let credentials = UserCredentials { email, password };
+
+    auth_service::login(credentials, conn)
         .map(|user| json!({ "user": user.to_user_auth(&state.secret) }))
         .ok_or_else(|| Errors::new(&[("email or password", "is invalid")]))
 }

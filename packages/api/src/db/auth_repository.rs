@@ -20,17 +20,14 @@ impl From<Error> for UserCreationError {
     }
 }
 
-pub fn register(
-    user: InsertableUser,
-    conn: Conn,
-) -> Result<User, UserCreationError> {
+pub fn register(user: InsertableUser, conn: Conn) -> Result<User, UserCreationError> {
     diesel::insert_into(users::table)
         .values(user)
         .get_result::<User>(&*conn)
         .map_err(Into::into)
 }
 
-pub fn login(email: &str, conn: Conn) -> Option<User> {
+pub fn login(email: String, conn: Conn) -> Option<User> {
     users::table
         .filter(users::email.eq(email))
         .get_result::<User>(&*conn)
