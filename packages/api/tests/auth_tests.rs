@@ -110,7 +110,6 @@ fn test_register_with_invalid_password_format() {
     assert_eq!(error, Some("length"))
 }
 
-
 #[test]
 /// Try logging in, and assure response token is valid
 fn test_login() {

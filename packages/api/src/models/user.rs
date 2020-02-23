@@ -1,5 +1,5 @@
+use crate::api::auth_middleware::Auth;
 use crate::config;
-use crate::services::auth_service::Auth;
 
 use serde::Serialize;
 

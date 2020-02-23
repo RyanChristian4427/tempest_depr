@@ -1,6 +1,6 @@
+use crate::api::auth_middleware::Auth;
 use crate::db::Conn;
 use crate::errors::Errors;
-use crate::services::auth_service::Auth;
 use crate::services::user_service;
 
 use rocket_contrib::json::JsonValue;
