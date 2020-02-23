@@ -1,6 +1,7 @@
 use crate::config::AppState;
 use crate::db::{auth_repository::UserCreationError, Conn};
 use crate::errors::{Errors, FieldValidator};
+use crate::models::user::InsertableUser;
 use crate::services::auth_service;
 
 use rocket::State;
@@ -9,12 +10,12 @@ use serde::Deserialize;
 use validator::Validate;
 
 #[derive(Deserialize)]
-pub struct NewUser {
-    user: NewUserData,
+pub struct RegistrationUser {
+    user: RegistrationUserData,
 }
 
 #[derive(Deserialize, Validate)]
-struct NewUserData {
+struct RegistrationUserData {
     first_name: Option<String>,
     last_name: Option<String>,
     #[validate(email)]
@@ -25,7 +26,7 @@ struct NewUserData {
 
 #[post("/users/register", format = "json", data = "<new_user>")]
 pub fn users_register(
-    new_user: Json<NewUser>,
+    new_user: Json<RegistrationUser>,
     conn: Conn,
     state: State<AppState>,
 ) -> Result<JsonValue, Errors> {
@@ -39,7 +40,14 @@ pub fn users_register(
 
     extractor.check()?;
 
-    auth_service::register(&first_name, &last_name, &email, &password, conn)
+    let user = InsertableUser {
+        first_name,
+        last_name,
+        email,
+        hashed_password: password,
+    };
+
+    auth_service::register(user, conn)
         .map(|user| json!({ "user": user.to_user_auth(&state.secret) }))
         .map_err(|error| {
             let _field = match error {
@@ -47,6 +55,7 @@ pub fn users_register(
             };
             Errors::new(&[(_field, "has already been taken")])
         })
+
 }
 
 #[derive(Deserialize)]
