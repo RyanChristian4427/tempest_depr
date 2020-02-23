@@ -37,24 +37,24 @@ pub fn users_register(
     let last_name = extractor.extract("last_name", new_user.last_name);
     let email = extractor.extract("email", new_user.email);
     let password = extractor.extract("password", new_user.password);
-
     extractor.check()?;
 
-    let user = InsertableUser {
-        first_name,
-        last_name,
-        email,
-        password,
-    };
-
-    auth_service::register(user, conn)
-        .map(|user| json!({ "user": user.to_user_auth(&state.secret) }))
-        .map_err(|error| {
-            let _field = match error {
-                UserCreationError::DuplicatedEmail => "email",
-            };
-            Errors::new(&[(_field, "has already been taken")])
-        })
+    auth_service::register(
+        InsertableUser {
+            first_name,
+            last_name,
+            email,
+            password,
+        },
+        conn,
+    )
+    .map(|user| json!({ "user": user.to_user_auth(&state.secret) }))
+    .map_err(|error| {
+        let _field = match error {
+            UserCreationError::DuplicatedEmail => "email",
+        };
+        Errors::new(&[(_field, "has already been taken")])
+    })
 }
 
 #[derive(Deserialize)]
@@ -83,9 +83,7 @@ pub fn users_login(
     let password = extractor.extract("password", user.password);
     extractor.check()?;
 
-    let credentials = UserCredentials { email, password };
-
-    auth_service::login(credentials, conn)
+    auth_service::login(UserCredentials { email, password }, conn)
         .map(|user| json!({ "user": user.to_user_auth(&state.secret) }))
         .ok_or_else(|| Errors::new(&[("email or password", "is invalid")]))
 }
