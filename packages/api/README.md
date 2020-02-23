@@ -15,8 +15,8 @@ These instructions will get you a copy of the project up and running on your loc
 ```
 Rust nightly
 Cargo
-Docker - optional
-Diesel-cli - necessary only if Docker is not used
+Docker/Compose - optional
+Diesel-cli and PostgreSQL - necessary only if Docker is not used
 ```
 
 ### Running
@@ -37,7 +37,7 @@ docker run --rm \
     -it ryanchristian4427/diesel-cli migration run
 ```
 
-The network you use depends on the parent directory, so if the docker compose is indeed within 'rocket-server', the command above will work just fine. Change it if you change the directory name.
+The network you use depends on the parent directory, so if the docker compose is indeed within 'api', the command above will work just fine. Change it if you change the directory name.
 
 The Docker image built for diesel-cli will run "Diesel" without any arguments, making the container act like a normal CLI. However, that very large command is necessary upon every use. I therefore recommend creating an alias "docker ... /diesel-cli" to "diesel-cli" in a .bashrc or .zshrc, so the tool can be just called with "diesel-cli [command]".
 
