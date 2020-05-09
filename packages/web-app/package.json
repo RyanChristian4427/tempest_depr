@@ -9,7 +9,7 @@
     "build": "preact build --no-prerender",
     "build:analyze": "yarn build --analyze",
     "lint": "eslint 'src/**/*.{js,ts,tsx}' --fix",
-    "prettier": "prettier src/**/*.{css,scss,json} --write"
+    "prettier": "prettier 'src/**/*.{css,md,scss,json}' --write"
   },
   "husky": {
     "hooks": {
@@ -17,8 +17,8 @@
     }
   },
   "lint-staged": {
-    "*.{css,md,scss}": "prettier --write",
-    "*.{js,jsx,ts,tsx}": "eslint --fix"
+    "*.{css,md,scss,json}": "prettier --write",
+    "*.{js,ts,tsx}": "eslint --fix"
   },
   "dependencies": {
     "bourbon": "^7.0.0",
