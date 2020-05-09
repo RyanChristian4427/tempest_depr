@@ -1,4 +1,4 @@
 {
     "extends": "./tsconfig.json",
-    "include": ["src/**/*", "preact.config.js"]
+    "include": ["src/**/*"]
 }
