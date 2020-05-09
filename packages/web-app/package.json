@@ -1,0 +1,49 @@
+{
+  "private": true,
+  "name": "web-app",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "serve:dev": "preact watch --port 3000",
+    "serve:prod": "yarn build && sirv build --port 3000 --single",
+    "build": "preact build --no-prerender",
+    "build:analyze": "yarn build --analyze",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}' --fix",
+    "prettier": "prettier src/**/*.{css,scss,json} --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{css,md,scss}": "prettier --write",
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
+  },
+  "dependencies": {
+    "bourbon": "^7.0.0",
+    "preact": "^10.3.1",
+    "preact-render-to-string": "^5.1.4",
+    "preact-router": "^3.2.1",
+    "ts-api-toolkit": "^2.0.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.25.0",
+    "@typescript-eslint/parser": "^2.25.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "eyeglass": "^3.0.0",
+    "husky": "^4.2.1",
+    "lint-staged": "^10.0.7",
+    "node-sass": "^4.14.1",
+    "preact-cli": "^3.0.0-rc.10",
+    "prettier": "^1.19.1",
+    "sass-loader": "^8.0.2",
+    "sirv-cli": "^1.0.0-next.4",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.3"
+  }
+}
