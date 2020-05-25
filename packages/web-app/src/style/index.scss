@@ -1,5 +1,11 @@
 @charset "utf-8";
-@import '~bourbon';
+@import 'variables';
+
+// Importing all of Bulma
+@import '~bulma/bulma.sass';
+
+// Important to import styles after Bulma, to take priority
+@import 'auth';
 
 .is-clickable {
   cursor: pointer;
@@ -9,14 +15,9 @@ html,
 body,
 #app,
 .App {
-  @include size(100%, 100%);
-  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .App {
   display: flex;
-}
-
-.home {
-  @include padding(3.5rem 1.25rem);
 }

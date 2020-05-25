@@ -1,0 +1,18 @@
+@import 'variables';
+
+.auth-page {
+  .main-content {
+    .columns {
+      height: 100vh;
+      margin: 0;
+
+      .first-column {
+        background-color: $theme-dull-red;
+      }
+
+      .second-column {
+        background-color: #fafafa;
+      }
+    }
+  }
+}
