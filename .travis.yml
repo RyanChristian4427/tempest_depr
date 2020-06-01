@@ -3,6 +3,9 @@ dist: xenial
 services:
   - docker
 
+matrix:
+  - fast_finish: true
+
 jobs:
   include:
     - language: rust
@@ -19,6 +22,7 @@ jobs:
       node_js: 14
       cache: yarn
       install:
+        - cd packages/web-app
         - yarn
       script:
         - yarn build
