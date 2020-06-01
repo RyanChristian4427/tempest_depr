@@ -12,4 +12,5 @@ jobs:
         - docker-compose up --build -d
         - docker run --rm -v "$PWD:/volume" -w /volume --network="api_default" -it ryanchristian4427/diesel-cli migration run
       script:
-        - cargo check && cargo test
+        - cargo check
+        - cargo test
