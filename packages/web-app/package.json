@@ -4,45 +4,33 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "serve:dev": "preact watch --port 3000",
-    "serve:prod": "yarn build && sirv build --port 3000 --single",
+    "serve:dev": "preact watch -p 3000",
+    "serve:prod": "yarn build && sirv build -p 3000 --single",
     "build": "preact build --no-prerender",
     "build:analyze": "yarn build --analyze",
-    "lint": "eslint 'src/**/*.{js,ts,tsx}' --fix",
-    "prettier": "prettier 'src/**/*.{css,md,scss,json}' --write"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{css,md,scss,json}": "prettier --write",
-    "*.{js,ts,tsx}": "eslint --fix"
+    "lint": "eslint 'src/**/*.{js,ts,tsx}' --fix && prettier 'src/**/*.{css,md,scss,json}' --write"
   },
   "dependencies": {
     "bulma": "^0.8.2",
-    "preact": "^10.3.1",
-    "preact-render-to-string": "^5.1.4",
+    "preact": "^10.4.4",
+    "preact-render-to-string": "^5.1.9",
     "preact-router": "^3.2.1",
-    "ts-api-toolkit": "^2.0.1"
+    "ts-api-toolkit": "^2.0.3"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.25.0",
-    "@typescript-eslint/parser": "^2.25.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^3.0.0",
-    "husky": "^4.2.1",
-    "lint-staged": "^10.0.7",
+    "@typescript-eslint/eslint-plugin": "^3.1.0",
+    "@typescript-eslint/parser": "^3.1.0",
+    "eslint": "^7.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.4",
     "node-sass": "^4.14.1",
-    "preact-cli": "^3.0.0-rc.10",
-    "prettier": "^1.19.1",
+    "preact-cli": "3.0.0-rc.10",
+    "prettier": "^2.0.5",
     "sass-loader": "^8.0.2",
-    "sirv-cli": "^1.0.0-next.4",
-    "ts-loader": "^6.2.1",
-    "typescript": "^3.8.3"
+    "sirv-cli": "^1.0.0-next.5",
+    "ts-loader": "^7.0.5",
+    "typescript": "^3.9.3"
   }
 }
