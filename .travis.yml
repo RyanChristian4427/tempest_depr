@@ -1,21 +1,15 @@
-language: rust
-rust: nightly
 dist: xenial
-sudo: false
 
 services:
   - docker
 
-install:
-  - cd packages/api
-  - docker-compose up --build -d
-  - docker run --rm -v "$PWD:/volume" -w /volume --network="api_default" -it ryanchristian4427/diesel-cli migration run
-
-
 jobs:
   include:
-    - stage: "Rust"
-      name: "Cargo Check"
-      script: "cargo check"
-    - name: "Cargo Test"
-      script: "cargo test"
+    - language: rust
+      rust: nightly
+      install:
+        - cd packages/api
+        - docker-compose up --build -d
+        - docker run --rm -v "$PWD:/volume" -w /volume --network="api_default" -it ryanchristian4427/diesel-cli migration run
+      script:
+        - name: cargo check && cargo test
