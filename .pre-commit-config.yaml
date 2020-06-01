@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: cargo-fmt
+        name: Cargo Format
+        language: system
+        entry: bash -c 'cd packages/api && cargo fmt'
+        types: [rust]
+        args: []
