@@ -2,8 +2,8 @@ import { FunctionalComponent, h } from 'preact';
 import { Suspense } from 'preact/compat';
 import { Route, Router } from 'preact-router';
 
-import Login from './auth/login';
-import Notfound from './notfound';
+import Login from './Auth/login';
+import Notfound from './NotFound';
 
 const App: FunctionalComponent = () => {
     return (
