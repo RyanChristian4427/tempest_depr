@@ -7,3 +7,12 @@ repos:
         entry: bash -c 'cd packages/api && cargo fmt'
         types: [rust]
         args: []
+  - repo: local
+    hooks:
+      - id: yarn-lint
+        name: Yarn Lint
+        language: system
+        entry: bash -c 'cd packages/web-app && yarn lint'
+        types: [file]
+        files: \.(js|ts|tsx|css|md|scss|json)$
+        args: []
