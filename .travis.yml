@@ -3,10 +3,8 @@ dist: xenial
 services:
   - docker
 
-matrix:
-  - fast_finish: true
-
 jobs:
+  fast_finish: true
   include:
     - language: rust
       rust: nightly
