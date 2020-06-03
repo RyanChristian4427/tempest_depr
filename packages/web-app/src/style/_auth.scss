@@ -1,17 +1,29 @@
 @import 'variables';
 
+@import '~bulma/sass/utilities/mixins';
+
 .auth-page {
   .main-content {
-    .columns {
-      height: 100vh;
-      margin: 0;
+    height: 100vh;
+    padding-top: 1px;
+    margin-top: -1px;
+    background: linear-gradient(90deg, #872916 66.66%, #f1f2f6 33.37%);
 
-      .first-column {
-        background-color: $theme-dull-red;
+    .login-card {
+      background-color: white;
+      border-radius: 5px;
+
+      @include until($tablet) {
+        margin: 20vh 5vw;
+        width: 90vw;
+        height: 40vh;
       }
 
-      .second-column {
-        background-color: #fafafa;
+      @include desktop {
+        margin-left: 50vw;
+        margin-top: 22vh;
+        width: 32vw;
+        height: 40vh;
       }
     }
   }
