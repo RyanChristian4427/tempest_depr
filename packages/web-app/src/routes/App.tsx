@@ -3,6 +3,7 @@ import { Suspense } from 'preact/compat';
 import { Route, Router } from 'preact-router';
 
 import Login from './Auth/login';
+import Register from './Auth/register';
 import Notfound from './NotFound';
 
 const App: FunctionalComponent = () => {
@@ -10,7 +11,8 @@ const App: FunctionalComponent = () => {
         <div id="app">
             <Suspense fallback={<Fallback />}>
                 <Router>
-                    <Route path="/login" component={Login} />
+                    <Route path="/auth/login" component={Login} />
+                    <Route path="/auth/register" component={Register} />
                     <Notfound default />
                 </Router>
             </Suspense>
