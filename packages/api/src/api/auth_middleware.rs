@@ -76,7 +76,7 @@ fn decode_token(token: &str, secret: &[u8]) -> Option<Auth> {
 mod tests {
     use super::*;
 
-    const JWT_TOKEN: &'static str =
+    const JWT_TOKEN: &str =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNtb2tldGVzdEBleGFtcGxlL\
         mNvbSIsImV4cCI6MTY4NjAyNzUxNCwiaWQiOjF9.DB-Mnal2QvBZArsXUY6SXaS_hq_sefXtMHECdM70W3M";
 

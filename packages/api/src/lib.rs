@@ -31,6 +31,10 @@ fn not_found() -> JsonValue {
     })
 }
 
+fn mounts() -> Vec<(&'static str, Vec<Route>)> {
+    vec![("/api/v1", api::v1::routes())]
+}
+
 fn rocket_instance(mounts: Vec<(&str, Vec<Route>)>) -> Rocket {
     let mut instance = rocket::custom(config::from_env());
 
@@ -42,10 +46,6 @@ fn rocket_instance(mounts: Vec<(&str, Vec<Route>)>) -> Rocket {
         .attach(db::Conn::fairing())
         .attach(config::AppState::manage())
         .register(catchers![not_found])
-}
-
-fn mounts() -> Vec<(&'static str, Vec<Route>)> {
-    vec![("/api/v1", api::v1::routes())]
 }
 
 pub fn rocket() -> rocket::Rocket {

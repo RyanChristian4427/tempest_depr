@@ -50,10 +50,10 @@ pub fn users_register(
     )
     .map(|user| json!({ "user": user.to_user_auth(&state.secret) }))
     .map_err(|error| {
-        let _field = match error {
-            UserCreationError::DuplicatedEmail => "email",
+        let error = match error {
+            UserCreationError::DuplicatedEmail => ("email", "has already been taken"),
         };
-        Errors::new(&[(_field, "has already been taken")])
+        Errors::new(&[error])
     })
 }
 
