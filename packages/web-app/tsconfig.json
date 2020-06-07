@@ -11,5 +11,5 @@
     "noImplicitAny": true,
     "outDir": "dist"
   },
-  "include": ["src/**/*", "./.eslintrc.js", "./.prettierrc.js", "./preact.config.js"]
+  "include": ["src/**/*"]
 }
