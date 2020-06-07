@@ -21,6 +21,7 @@ module.exports = {
     },
     rules: {
         '@typescript-eslint/quotes': ['warn', 'single'],
+        '@typescript-eslint/interface-name-prefix': ['off'],
         'react/no-unknown-property': ['error', { ignore: ['class'] }],
     },
     settings: {
