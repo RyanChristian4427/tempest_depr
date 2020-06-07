@@ -13,8 +13,10 @@
   "dependencies": {
     "bulma": "^0.8.2",
     "preact": "^10.4.4",
+    "preact-feather": "^4.1.0",
     "preact-render-to-string": "^5.1.9",
     "preact-router": "^3.2.1",
+    "recoil": "^0.0.8",
     "ts-api-toolkit": "^2.0.3"
   },
   "devDependencies": {
