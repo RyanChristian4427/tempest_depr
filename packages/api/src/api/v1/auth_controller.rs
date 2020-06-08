@@ -4,7 +4,7 @@ use crate::errors::{Errors, FieldValidator};
 use crate::models::user::{InsertableUser, UserCredentials};
 use crate::services::auth_service;
 
-use rocket::State;
+use rocket::{http::Status, State};
 use rocket_contrib::json::{Json, JsonValue};
 use serde::Deserialize;
 use validator::Validate;
@@ -51,9 +51,9 @@ pub fn users_register(
     .map(|user| json!({ "user": user.to_user_auth(&state.secret) }))
     .map_err(|error| {
         let error = match error {
-            UserCreationError::DuplicatedEmail => ("email", "has already been taken"),
+            UserCreationError::DuplicatedEmail => ("email is already in use"),
         };
-        Errors::new(&[error])
+        Errors::new(Status::Conflict, error.to_owned())
     })
 }
 
@@ -85,5 +85,10 @@ pub fn users_login(
 
     auth_service::login(UserCredentials { email, password }, conn)
         .map(|user| json!({ "user": user.to_user_auth(&state.secret) }))
-        .ok_or_else(|| Errors::new(&[("email or password", "is invalid")]))
+        .ok_or_else(|| {
+            Errors::new(
+                Status::Unauthorized,
+                "email or password is invalid".to_owned(),
+            )
+        })
 }
