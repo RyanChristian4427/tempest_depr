@@ -14,19 +14,16 @@ fn test_get_user_options() {
         .header(common::token_header(token))
         .dispatch();
 
-    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(Status::Ok, response.status());
 
     let value = common::response_json_value(response);
-    let options = value
-        .get("user_options")
-        .expect("must have a 'user_options' field");
-    let expected_result: i32 = 50;
 
     assert_eq!(
-        options
-            .get("emails_per_page")
-            .expect("must have a 'emails_per_page' field"),
-        expected_result
+        Some(50),
+        value
+            .get("user_options")
+            .and_then(|user_options| user_options.get("emails_per_page"))
+            .and_then(|emails_per_page| emails_per_page.as_i64())
     );
 }
 
@@ -41,20 +38,14 @@ fn test_invalid_get_user_options() {
         ))
         .dispatch();
 
-    assert_eq!(response.status(), Status::UnprocessableEntity);
+    assert_eq!(Status::NotFound, response.status());
 
     let value = common::response_json_value(response);
+    let success = value.get("success").and_then(|success| success.as_bool());
+    let message = value.get("message").and_then(|message| message.as_str());
 
-    let inbox_error = value
-        .get("errors")
-        .expect("must have a 'errors' field")
-        .get("options for that user")
-        .expect("must have 'options for that user' errors")
-        .get(0)
-        .expect("must have non empty 'options for that user' errors")
-        .as_str();
-
-    assert_eq!(inbox_error, Some("don't exist"));
+    assert_eq!(Some(false), success);
+    assert_eq!(Some("options for that user don't exist"), message);
 }
 
 #[test]
@@ -67,7 +58,7 @@ fn test_get_user_inbox() {
         .header(common::token_header(token))
         .dispatch();
 
-    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(Status::Ok, response.status());
 
     let value = common::response_json_value(response);
     let inbox_size = value
@@ -77,7 +68,7 @@ fn test_get_user_inbox() {
         .expect("must have 'inbox' field");
     let expected_inbox_size = 2;
 
-    assert_eq!(inbox_size, expected_inbox_size);
+    assert_eq!(expected_inbox_size, inbox_size);
 }
 
 #[test]
@@ -91,18 +82,13 @@ fn test_invalid_get_user_inbox() {
         ))
         .dispatch();
 
-    assert_eq!(response.status(), Status::UnprocessableEntity);
+    assert_eq!(Status::NotFound, response.status());
 
     let value = common::response_json_value(response);
 
-    let inbox_error = value
-        .get("errors")
-        .expect("must have a 'errors' field")
-        .get("inbox for user")
-        .expect("must have 'inbox for user' errors")
-        .get(0)
-        .expect("must have non empty 'inbox for user' errors")
-        .as_str();
+    let success = value.get("success").and_then(|success| success.as_bool());
+    let message = value.get("message").and_then(|message| message.as_str());
 
-    assert_eq!(inbox_error, Some("doesn't exist"));
+    assert_eq!(Some(false), success);
+    assert_eq!(Some("inbox for user doesn't exist"), message);
 }

@@ -82,7 +82,7 @@ fn try_login(client: &Client) -> Option<Token> {
     Some(token)
 }
 
-/// Register user for
+/// Register user for use in other tests
 pub fn register(client: &Client, first_name: &str, last_name: &str, email: &str, password: &str) {
     let response = client
         .post("/api/v1/users/register")
@@ -91,7 +91,7 @@ pub fn register(client: &Client, first_name: &str, last_name: &str, email: &str,
         .dispatch();
 
     match response.status() {
-        Status::Ok | Status::UnprocessableEntity => {} // ok,
+        Status::Ok | Status::Conflict => {} // ok,
         status => panic!("Registration failed: {}", status),
     }
 }
