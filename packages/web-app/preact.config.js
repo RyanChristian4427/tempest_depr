@@ -19,7 +19,7 @@ export default {
             config.devServer.proxy = [
                 {
                     path: '/api',
-                    target: 'http://localhost:8000',
+                    target: 'http://[::1]:8000',
                 },
             ];
         }

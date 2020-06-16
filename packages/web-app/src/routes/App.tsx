@@ -1,21 +1,22 @@
 import { FunctionalComponent, h } from 'preact';
 import { Suspense } from 'preact/compat';
 import { Route, Router } from 'preact-router';
+import { RecoilRoot } from 'recoil';
 
-import Login from './Auth/login';
-import Register from './Auth/register';
+import Auth from './Auth';
 import Notfound from './NotFound';
 
 const App: FunctionalComponent = () => {
     return (
         <div id="app">
-            <Suspense fallback={<Fallback />}>
-                <Router>
-                    <Route path="/auth/login" component={Login} />
-                    <Route path="/auth/register" component={Register} />
-                    <Notfound default />
-                </Router>
-            </Suspense>
+            <RecoilRoot>
+                <Suspense fallback={<Fallback />}>
+                    <Router>
+                        <Route path="/auth/:subPage" component={Auth} />
+                        <Route default component={Notfound} />
+                    </Router>
+                </Suspense>
+            </RecoilRoot>
         </div>
     );
 };

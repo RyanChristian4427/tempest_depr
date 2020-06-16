@@ -20,6 +20,7 @@
     "ts-api-toolkit": "^2.0.3"
   },
   "devDependencies": {
+    "@types/recoil": "^0.0.0",
     "@typescript-eslint/eslint-plugin": "2.34.0",
     "@typescript-eslint/parser": "2.34.0",
     "eslint": "^7.1.0",
@@ -28,7 +29,7 @@
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.4",
     "node-sass": "^4.14.1",
-    "preact-cli": "3.0.0-rc.10",
+    "preact-cli": "3.0.0-rc.14",
     "prettier": "^2.0.5",
     "sass-loader": "^8.0.2",
     "sirv-cli": "^1.0.0-next.5",

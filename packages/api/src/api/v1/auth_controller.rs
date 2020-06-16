@@ -15,6 +15,7 @@ pub struct RegistrationUser {
 }
 
 #[derive(Deserialize, Validate)]
+#[serde(rename_all = "camelCase")]
 struct RegistrationUserData {
     first_name: Option<String>,
     last_name: Option<String>,
