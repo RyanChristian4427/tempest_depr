@@ -1,7 +1,9 @@
 # Tempest [![Build Status](https://travis-ci.org/RyanChristian4427/tempest.svg?branch=master)](https://travis-ci.org/RyanChristian4427/tempest)
 > Webmail API server and client
 
-Tempest will eventually be a webmail client that will not be unlike other webmail systems like Gmail. I had a desire to work with Rust, as well as work more with Vue, so I thought that this would make a great project.  
+Tempest will eventually be a webmail client with a custom build email server.
+
+This, however, is a long way off in the future. I quickly lost the time I had planned on using to build this due to my studies and I have not been able to find the time since. There's not much here as of now, but maybe in the future I'll be able to pick this up and do it justice. 
 
 ## Getting Started
 
@@ -9,10 +11,6 @@ Instructions for running both the API server and the client can be found in the 
 
 ## Built With
 
-* [Vue](https://vuejs.org/) - The client framework used
-  * [Vuex](https://vuex.vuejs.org/) - Client state management
-  * [Buefy](https://buefy.org/) - SCSS styling framework
-  * [NPM](https://www.npmjs.com/) - Client dependency management
 * [Rocket](https://rocket.rs/) - The web framework used to build the API
   * [Diesel](https://diesel.rs/) - ORM and Query Builder for Rust
   * [PostgreSQL](https://www.postgresql.org/) - RDBMS used
