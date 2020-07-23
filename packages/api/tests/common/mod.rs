@@ -87,7 +87,7 @@ pub fn register(client: &Client, first_name: &str, last_name: &str, email: &str,
     let response = client
         .post("/api/v1/users/register")
         .header(ContentType::JSON)
-        .body(json_string!({"user": {"first_name": first_name, "last_name": last_name, "email": email, "password": password}}))
+        .body(json_string!({"user": {"firstName": first_name, "lastName": last_name, "email": email, "password": password}}))
         .dispatch();
 
     match response.status() {

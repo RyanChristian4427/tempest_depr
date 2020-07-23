@@ -14,7 +14,7 @@ fn test_register() {
     let response = &mut client
         .post("/api/v1/users/register")
         .header(ContentType::JSON)
-        .body(json_string!({"user": {"first_name": FIRST_NAME, "last_name": LAST_NAME, "email": EMAIL, "password": PASSWORD}}))
+        .body(json_string!({"user": {"firstName": FIRST_NAME, "lastName": LAST_NAME, "email": EMAIL, "password": PASSWORD}}))
         .dispatch();
 
     let status = response.status();
@@ -46,8 +46,8 @@ fn test_register_with_duplicated_email() {
         .header(ContentType::JSON)
         .body(json_string!({
             "user": {
-                "first_name": "new_clone_name",
-                "last_name": "new_clone_last_name",
+                "firstName": "new_clone_name",
+                "lastName": "new_clone_last_name",
                 "email": "original@example.com",
                 "password": PASSWORD,
             },
@@ -71,7 +71,7 @@ fn test_register_with_invalid_email_format() {
     let response = &mut client
         .post("/api/v1/users/register")
         .header(ContentType::JSON)
-        .body(json_string!({"user": {"first_name": FIRST_NAME, "last_name": LAST_NAME, "email": "smoketest", "password": PASSWORD}}))
+        .body(json_string!({"user": {"firstName": FIRST_NAME, "lastName": LAST_NAME, "email": "smoketest", "password": PASSWORD}}))
         .dispatch();
 
     assert_eq!(Status::UnprocessableEntity, response.status());
@@ -91,7 +91,7 @@ fn test_register_with_invalid_password_format() {
     let response = &mut client
         .post("/api/v1/users/register")
         .header(ContentType::JSON)
-        .body(json_string!({"user": {"first_name": FIRST_NAME, "last_name": LAST_NAME, "email": EMAIL, "password": "pw"}}))
+        .body(json_string!({"user": {"firstName": FIRST_NAME, "lastName": LAST_NAME, "email": EMAIL, "password": "pw"}}))
         .dispatch();
 
     assert_eq!(Status::UnprocessableEntity, response.status());
