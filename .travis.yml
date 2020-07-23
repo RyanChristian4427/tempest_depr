@@ -16,11 +16,3 @@ jobs:
       script:
         - cargo check
         - cargo test
-    - language: node_js
-      node_js: 14
-      cache: yarn
-      install:
-        - cd packages/web-app
-        - yarn
-      script:
-        - yarn build
