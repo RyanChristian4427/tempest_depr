@@ -1,4 +1,4 @@
-# Tempest [![Build Status](https://travis-ci.org/RyanChristian4427/tempest.svg?branch=master)](https://travis-ci.org/RyanChristian4427/tempest)
+# Tempest [![Build Status](https://travis-ci.org/RyanChristian4427/tempest_depr.svg?branch=master)](https://travis-ci.org/RyanChristian4427/tempest_depr)
 > Webmail API server and client
 
 Tempest will eventually be a webmail client with a custom build email server.
